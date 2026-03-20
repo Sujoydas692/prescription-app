@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --sidebar-bg: #F4A58A;
+  --primary: #2E8B8B;
+  --primary-dark: #1F6B6B;
+  --navy: #1E2A78;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Nunito', sans-serif;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.10), 0 1px 0 rgba(255,255,255,0.8) inset;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
+
+.sidebar-gradient {
+  background: linear-gradient(160deg, #F4A58A 0%, #F9C4B0 50%, #EE8875 100%);
+}
+
+.login-bg {
+  background: linear-gradient(135deg, #E8F5F5 0%, #F4A58A 40%, #EDD5E8 100%);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.7);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(46, 139, 139, 0.2);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.page-enter-active, .page-leave-active { transition: opacity 0.3s ease; }
+.page-enter-from, .page-leave-to { opacity: 0; }
+
+.btn-primary {
+  background: #2E6B8B;
+  color: white;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+.btn-primary:hover { background: #1F5B7B; box-shadow: 0 4px 14px rgba(46,107,139,0.35); }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.btn-secondary {
+  background: rgba(255,255,255,0.8);
+  color: #2C3154;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(30,42,74,0.15);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.btn-secondary:hover { background: white; }
+
+.input-field {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(30,42,74,0.14);
+  background: rgba(255,255,255,0.8);
+  color: #2C3154;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+.input-field::placeholder { color: #9AA0B8; }
+.input-field:focus {
+  border-color: #2E8B8B;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(46,139,139,0.12);
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  color: rgba(30,42,74,0.65);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.sidebar-link:hover { background: rgba(255,255,255,0.4); color: #1E2A4A; }
+.sidebar-link.active {
+  background: rgba(255,255,255,0.58);
+  color: #1E2A4A;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+
+.page-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: #1E2A4A;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.04);
+  border: 1px solid rgba(30,42,74,0.06);
+  padding: 24px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+}
+
+.Vue-Toastification__toast { font-family: 'DM Sans', sans-serif !important; border-radius: 14px !important; }
+
+/* Login card — peach-tinted glass matching sidebar theme */
+.login-card {
+  background: rgba(255, 248, 245, 0.52);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1.5px solid rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 12px 50px rgba(238, 136, 117, 0.18),
+    0 2px 0 rgba(255, 255, 255, 0.85) inset,
+    0 -1px 0 rgba(238, 136, 117, 0.12) inset;
+}
