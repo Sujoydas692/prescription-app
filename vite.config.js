@@ -13,7 +13,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://l1v2fhgx-7094.asse.devtunnels.ms',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '/api')
       }

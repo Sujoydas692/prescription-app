@@ -262,8 +262,8 @@ onMounted(async () => {
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 12px;
-  color: white;
-  background: linear-gradient(135deg, #ee8875, #2e6b8b);
+  color: #1e2a4a;
+  background: #f4a58a;
   box-shadow: 0 6px 14px rgba(238, 136, 117, 0.35);
   transition: all 0.3s;
   border: none;

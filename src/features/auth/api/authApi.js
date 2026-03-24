@@ -3,31 +3,24 @@ import http from '@/shared/utils/http'
 export const authApi = {
   /**
    * Login with Google OAuth token
-   * POST /api/auth/google-login
-   * Body: { googleToken: string }
-   * Returns: { token, doctor: { doctorId, fullName, email, isVerified } }
+   * POST /api/user/login
+   * Body: { provider: "google", token: googleToken }
+   * Returns: { success: true, message: "Success", data: { token: string, role: string } }
    */
   googleLogin(googleToken) {
-    return http.post('/auth/google-login', { googleToken })
-  },
-
-  /**
-   * Register with Google OAuth token
-   * POST /api/auth/google-register
-   * Body: { googleToken: string }
-   * Returns: { token, doctor: { doctorId, fullName, email } }
-   */
-  googleRegister(googleToken) {
-    return http.post('/auth/google-register', { googleToken })
+    return http.post('/user/login', { 
+      provider: "google", 
+      token: googleToken 
+    })
   },
 
   /**
    * Get current doctor profile
-   * GET /api/auth/me
-   * Returns: { doctor }
+   * GET /api/user/me
+   * Returns: { success: true, data: { doctor } }
    */
   getMe() {
-    return http.get('/auth/me')
+    return http.get('/user/me')
   },
 
   /**

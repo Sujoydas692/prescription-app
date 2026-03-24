@@ -4,8 +4,13 @@
     <div class="doctor-header">
       <div class="doctor-header-content">
         <div class="flex items-center gap-4">
-          <div class="doctor-avatar">
-            {{ authStore.doctorName?.charAt(0)?.toUpperCase() || "D" }}
+          <div class="avatar-wrapper">
+            <div class="avatar-glow"></div>
+            <div class="avatar">
+              <span class="avatar-text">{{
+                authStore.doctorName?.charAt(0)?.toUpperCase() || "D"
+              }}</span>
+            </div>
           </div>
 
           <div class="doctor-info">
@@ -300,18 +305,49 @@ onMounted(async () => {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
-.doctor-avatar {
-  width: 48px;
-  height: 48px;
+.avatar-wrapper {
+  position: relative;
+}
+
+.avatar-glow {
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, #ee8875, #2e8b8b);
+  border-radius: 50%;
+  opacity: 0.3;
+  filter: blur(8px);
+  animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+.avatar {
+  position: relative;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: #ee8875;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 18px;
-  flex-shrink: 0;
+  z-index: 1;
+}
+
+.avatar-text {
+  color: white;
+  font-size: 32px;
+  font-weight: 800;
+  font-family: "Nunito", sans-serif;
 }
 
 .doctor-info {

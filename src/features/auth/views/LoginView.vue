@@ -39,17 +39,12 @@
       />
     </div>
 
-   
-
-    <!--
-      DESKTOP: glass card wrapper (md and above)
-      MOBILE:  no card — content floats directly on background
-    -->
+    <!-- Main Container -->
     <div
       class="relative w-full fade-in-up"
       :class="isMobile ? 'max-w-full px-6' : 'max-w-[600px] mx-5'"
     >
-      <!-- Card shell — visible only on desktop -->
+      <!-- Card shell -->
       <div
         :class="
           isMobile
@@ -155,110 +150,49 @@
           ></div>
         </div>
 
-        <!-- Buttons side by side -->
-        <div class="flex gap-2">
-          <!-- Sign In -->
-          <button
-            @click="triggerLogin"
-            :disabled="authStore.loading"
-            class="flex-1 flex items-center justify-center gap-2 rounded-[12px] font-bold text-[14px] transition-all duration-200 active:scale-[0.97] disabled:opacity-50"
-            style="
-              padding: 12px 10px;
-              background: rgba(255, 255, 255, 0.75);
-              border: 1.5px solid rgba(255, 255, 255, 0.9);
-              color: #1e2a4a;
-              box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-              backdrop-filter: blur(12px);
-              font-family: &quot;Nunito&quot;, sans-serif;
-            "
-            @mouseover="
-              (e) =>
-                (e.currentTarget.style.background = 'rgba(255,255,255,0.95)')
-            "
-            @mouseout="
-              (e) =>
-                (e.currentTarget.style.background = 'rgba(255,255,255,0.75)')
-            "
-          >
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <path
-                d="M19.6 10.23c0-.68-.06-1.36-.18-2H10v3.79h5.39a4.6 4.6 0 0 1-2 3.02v2.5h3.22c1.89-1.74 2.99-4.3 2.99-7.31z"
-                fill="#4285F4"
-              />
-              <path
-                d="M10 20c2.7 0 4.96-.89 6.61-2.42l-3.22-2.5c-.9.6-2.04.95-3.39.95-2.6 0-4.8-1.75-5.59-4.12H1.1v2.58A10 10 0 0 0 10 20z"
-                fill="#34A853"
-              />
-              <path
-                d="M4.41 11.91A6.01 6.01 0 0 1 4.1 10c0-.66.11-1.3.31-1.91V5.51H1.1A10 10 0 0 0 0 10c0 1.61.39 3.14 1.1 4.49l3.31-2.58z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M10 3.96c1.47 0 2.79.5 3.83 1.5l2.86-2.86A9.96 9.96 0 0 0 10 0 10 10 0 0 0 1.1 5.51L4.41 8.1C5.2 5.72 7.4 3.96 10 3.96z"
-                fill="#EA4335"
-              />
-            </svg>
-            <span>{{
-              authStore.loading && activeAction === "login"
-                ? "Signing in…"
-                : "Sign In"
-            }}</span>
-          </button>
-
-          <!-- Divider -->
-          <div
-            class="w-px self-stretch"
-            style="background: rgba(30, 42, 74, 0.1)"
-          ></div>
-
-          <!-- Sign Up -->
-          <button
-            @click="triggerRegister"
-            :disabled="authStore.loading"
-            class="flex-1 flex items-center justify-center gap-2 rounded-[12px] font-bold text-[14px] transition-all duration-200 active:scale-[0.97] disabled:opacity-50"
-            style="
-              padding: 12px 10px;
-              background: rgba(255, 255, 255, 0.75);
-              border: 1.5px solid rgba(255, 255, 255, 0.9);
-              color: #1e2a4a;
-              box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-              backdrop-filter: blur(12px);
-              font-family: &quot;Nunito&quot;, sans-serif;
-            "
-            @mouseover="
-              (e) =>
-                (e.currentTarget.style.background = 'rgba(255,255,255,0.95)')
-            "
-            @mouseout="
-              (e) =>
-                (e.currentTarget.style.background = 'rgba(255,255,255,0.75)')
-            "
-          >
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-              <path
-                d="M19.6 10.23c0-.68-.06-1.36-.18-2H10v3.79h5.39a4.6 4.6 0 0 1-2 3.02v2.5h3.22c1.89-1.74 2.99-4.3 2.99-7.31z"
-                fill="#4285F4"
-              />
-              <path
-                d="M10 20c2.7 0 4.96-.89 6.61-2.42l-3.22-2.5c-.9.6-2.04.95-3.39.95-2.6 0-4.8-1.75-5.59-4.12H1.1v2.58A10 10 0 0 0 10 20z"
-                fill="#34A853"
-              />
-              <path
-                d="M4.41 11.91A6.01 6.01 0 0 1 4.1 10c0-.66.11-1.3.31-1.91V5.51H1.1A10 10 0 0 0 0 10c0 1.61.39 3.14 1.1 4.49l3.31-2.58z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M10 3.96c1.47 0 2.79.5 3.83 1.5l2.86-2.86A9.96 9.96 0 0 0 10 0 10 10 0 0 0 1.1 5.51L4.41 8.1C5.2 5.72 7.4 3.96 10 3.96z"
-                fill="#EA4335"
-              />
-            </svg>
-            <span>{{
-              authStore.loading && activeAction === "register"
-                ? "Creating…"
-                : "Sign Up"
-            }}</span>
-          </button>
-        </div>
+        <!-- Google Sign In Button -->
+        <button
+          @click="handleGoogleLogin"
+          :disabled="authStore.loading"
+          class="w-full flex items-center justify-center gap-2 rounded-[12px] font-bold text-[14px] transition-all duration-200 active:scale-[0.97] disabled:opacity-50"
+          style="
+            padding: 14px 10px;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            color: #1e2a4a;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(12px);
+            font-family: &quot;Nunito&quot;, sans-serif;
+          "
+          @mouseover="
+            (e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.95)')
+          "
+          @mouseout="
+            (e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.75)')
+          "
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M19.6 10.23c0-.68-.06-1.36-.18-2H10v3.79h5.39a4.6 4.6 0 0 1-2 3.02v2.5h3.22c1.89-1.74 2.99-4.3 2.99-7.31z"
+              fill="#4285F4"
+            />
+            <path
+              d="M10 20c2.7 0 4.96-.89 6.61-2.42l-3.22-2.5c-.9.6-2.04.95-3.39.95-2.6 0-4.8-1.75-5.59-4.12H1.1v2.58A10 10 0 0 0 10 20z"
+              fill="#34A853"
+            />
+            <path
+              d="M4.41 11.91A6.01 6.01 0 0 1 4.1 10c0-.66.11-1.3.31-1.91V5.51H1.1A10 10 0 0 0 0 10c0 1.61.39 3.14 1.1 4.49l3.31-2.58z"
+              fill="#FBBC05"
+            />
+            <path
+              d="M10 3.96c1.47 0 2.79.5 3.83 1.5l2.86-2.86A9.96 9.96 0 0 0 10 0 10 10 0 0 0 1.1 5.51L4.41 8.1C5.2 5.72 7.4 3.96 10 3.96z"
+              fill="#EA4335"
+            />
+          </svg>
+          <span>{{
+            authStore.loading ? "Signing in..." : "Sign in with Google"
+          }}</span>
+        </button>
 
         <!-- Error -->
         <p
@@ -285,7 +219,6 @@
           >
         </p>
       </div>
-      <!-- end card shell -->
 
       <!-- Bottom glow — desktop only -->
       <div
@@ -305,7 +238,6 @@ import { useAuthStore } from "../stores/authStore";
 
 const router = useRouter();
 const authStore = useAuthStore();
-const activeAction = ref(null);
 
 const windowWidth = ref(window.innerWidth);
 const onResize = () => {
@@ -336,44 +268,42 @@ function initGoogle() {
   setTimeout(initGoogle, 100);
 }
 
-function createTokenClient(action) {
-  return window.google.accounts.oauth2.initTokenClient({
+// Single function for Google Login (both login and register use same endpoint)
+function handleGoogleLogin() {
+  if (!window.google?.accounts?.oauth2) {
+    toast.error("Google services not loaded. Please refresh.");
+    return;
+  }
+
+  const client = window.google.accounts.oauth2.initTokenClient({
     client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
     scope: "email profile",
-    callback: (response) => {
+    callback: async (response) => {
       if (response.error) {
         console.error("Google error:", response.error);
         toast.error("Google authentication failed.");
-        activeAction.value = null;
         return;
       }
 
-      console.log("Token:", response.access_token);
+      try {
+        // Call the login API with Google token
+        await authStore.loginWithGoogle(response.access_token);
 
-      if (action === "login") {
-        toast.success("Login Successful!");
-        // authStore.googleLogin(response.access_token);
-        // router.push("/dashboard");
-      } else {
-        toast.success("Registration Successful!");
-        // authStore.googleRegister(response.access_token);
-        // router.push("/dashboard");
+        // Check role from response
+        if (authStore.userRole === "doctor") {
+          toast.success("Login Successful!");
+          router.push("/dashboard");
+        } else {
+          toast.error("Access denied. Only doctors can login.");
+          authStore.logout();
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        toast.error(error.message || "Login failed. Please try again.");
       }
-
-      activeAction.value = null;
     },
   });
-}
 
-function triggerLogin() {
-  activeAction.value = "login";
-  const client = createTokenClient("login");
-  client.requestAccessToken();
-}
-
-function triggerRegister() {
-  activeAction.value = "register";
-  const client = createTokenClient("register");
   client.requestAccessToken();
 }
 </script>
