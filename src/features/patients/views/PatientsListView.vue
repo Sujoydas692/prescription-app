@@ -32,8 +32,14 @@
 
     <!-- Patients table -->
     <div class="patients-card">
-      <div v-if="store.loading" class="text-center py-16">
-        <p class="text-[13px]" style="color: #9aa0b8">Loading...</p>
+      <div v-if="store.loading" class="loading-state">
+        <div class="loading-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+        </div>
+        <p class="loading-text">Loading Patients...</p>
       </div>
 
       <div v-else-if="filtered.length === 0" class="text-center py-16">
@@ -139,6 +145,79 @@ onMounted(() => store.fetchAll());
 </script>
 
 <style scoped>
+/* ========== Loading Animation Styles ========== */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  gap: 20px;
+}
+
+.loading-spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+.spinner-ring:nth-child(1) {
+  border-top-color: #ee8875;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.spinner-ring:nth-child(2) {
+  border-right-color: #2e8b8b;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
+  animation-delay: -0.3s;
+}
+
+.spinner-ring:nth-child(3) {
+  border-bottom-color: #f4a58a;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation-delay: -0.6s;
+}
+
+.spinner-ring:nth-child(4) {
+  border-left-color: #2e6b8b;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
+  animation-delay: -0.9s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: 13px;
+  color: #9aa0b8;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
 /* Search and Add Container */
 .search-add-container {
   display: flex;
