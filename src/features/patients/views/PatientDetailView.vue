@@ -1,13 +1,8 @@
 <template>
   <div class="patient-details-container">
     <!-- Back button and actions -->
-    <div class="action-bar">
-      <button
-        @click="$router.back()"
-        @mouseover="(e) => (e.currentTarget.style.color = '#1E2A4A')"
-        @mouseout="(e) => (e.currentTarget.style.color = '#9AA0B8')"
-        class="back-btn"
-      >
+    <div class="action-bar no-print">
+      <button @click="$router.back()" class="back-btn">
         <svg
           width="18"
           height="18"
@@ -67,23 +62,30 @@
       </div>
     </div>
 
-    <div
-      v-if="store.loading"
-      class="text-center py-16 text-[13px]"
-      style="color: #9aa0b8"
-    >
-      Loading...
-    </div>
-    <div v-else-if="!patient" class="text-center py-16">
-      <div class="text-4xl mb-3">👤</div>
-      <p
-        class="text-[14px] font-bold mb-1"
-        style="color: #1e2a4a; font-family: &quot;Nunito&quot;, sans-serif"
-      >
-        Patient not found
-      </p>
+    <!-- Loading State -->
+    <div v-if="store.loading" class="loading-state">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+      </div>
+      <p class="loading-text">Loading patient details...</p>
     </div>
 
+    <!-- Not Found State -->
+    <div v-else-if="!patient" class="not-found-card">
+      <div class="not-found-icon">👤</div>
+      <h3 class="not-found-title">Patient not found</h3>
+      <p class="not-found-text">
+        The patient you're looking for doesn't exist or has been removed.
+      </p>
+      <RouterLink to="/patients" class="back-to-patients">
+        ← Back to Patients
+      </RouterLink>
+    </div>
+
+    <!-- Patient Details -->
     <template v-else>
       <div class="patient-card">
         <div class="card-cover"></div>
@@ -119,7 +121,7 @@
                   </svg>
                   <span>{{ patient.mobileNumber }}</span>
                 </span>
-                <span class="meta-item">
+                <span class="meta-item" v-if="patient.address">
                   <svg
                     width="14"
                     height="14"
@@ -160,12 +162,15 @@
             </div>
           </div>
 
-          <div class="additional-info">
-            <div class="info-chip">
+          <div
+            class="additional-info"
+            v-if="patient.lastVisit || patient.totalVisits"
+          >
+            <div class="info-chip" v-if="patient.lastVisit">
               <span class="chip-label">Last Visit</span>
-              <span class="chip-value">{{ patient.lastVisit }}</span>
+              <span class="chip-value">{{ fmtDate(patient.lastVisit) }}</span>
             </div>
-            <div class="info-chip">
+            <div class="info-chip" v-if="patient.totalVisits">
               <span class="chip-label">Total Visits</span>
               <span class="chip-value">{{ patient.totalVisits }}</span>
             </div>
@@ -198,9 +203,24 @@
           </RouterLink>
         </div>
 
-        <div v-if="!patientRx.length" class="text-center py-10">
-          <div class="text-3xl mb-2">📋</div>
-          <p class="text-[13px]" style="color: #9aa0b8">No prescriptions yet</p>
+        <div v-if="rxStore.loading" class="prescriptions-loading">
+          <div class="small-spinner">
+            <div class="small-ring"></div>
+            <div class="small-ring"></div>
+            <div class="small-ring"></div>
+          </div>
+          <p>Loading prescriptions...</p>
+        </div>
+
+        <div v-else-if="!patientRx.length" class="empty-prescriptions">
+          <div class="empty-icon">📋</div>
+          <p>No prescriptions yet</p>
+          <RouterLink
+            :to="`/prescriptions/new?patientId=${patient.patientId}`"
+            class="create-first-btn"
+          >
+            Create first prescription →
+          </RouterLink>
         </div>
 
         <div v-else class="prescriptions-list">
@@ -208,13 +228,6 @@
             v-for="rx in patientRx"
             :key="rx.prescriptionId"
             class="prescription-card"
-            @mouseover="
-              (e) =>
-                (e.currentTarget.style.background = 'rgba(238,136,117,0.04)')
-            "
-            @mouseout="
-              (e) => (e.currentTarget.style.background = 'transparent')
-            "
             @click="$router.push(`/prescriptions/${rx.prescriptionId}`)"
           >
             <div class="card-left">
@@ -224,7 +237,7 @@
                   {{ rx.diagnosis || "No diagnosis" }}
                 </h4>
                 <p class="prescription-meta">
-                  <span>{{ rx.chamberName }}</span>
+                  <span>{{ rx.chamberName || "Main Chamber" }}</span>
                 </p>
               </div>
             </div>
@@ -251,6 +264,7 @@ const rxStore = usePrescriptionsStore();
 const patient = computed(() => store.currentPatient);
 const patientRx = ref([]);
 const fmtDate = (d) => (d ? dayjs(d).format("MMM D, YYYY") : "—");
+
 const fields = computed(() =>
   patient.value
     ? [
@@ -282,12 +296,17 @@ const fields = computed(() =>
           color: "#c05030",
           bgColor: "rgba(192, 80, 48, 0.1)",
         },
-      ]
+      ].filter(
+        (f) => f.value !== null && f.value !== undefined && f.value !== "",
+      )
     : [],
 );
+
 onMounted(async () => {
   await store.fetchById(route.params.id);
-  patientRx.value = await rxStore.fetchByPatient(route.params.id);
+  if (patient.value) {
+    patientRx.value = (await rxStore.fetchByPatient(route.params.id)) || [];
+  }
 });
 </script>
 
@@ -312,8 +331,8 @@ onMounted(async () => {
 .back-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
+  gap: 6px;
+  padding: 8px 16px;
   border-radius: 12px;
   background: white;
   border: 1px solid rgba(30, 42, 74, 0.1);
@@ -351,12 +370,13 @@ onMounted(async () => {
 }
 
 .edit-btn {
-  background: #fff;
+  background: white;
   border: 1px solid rgba(30, 42, 74, 0.1);
   color: #1e2a4a;
 }
 
 .edit-btn:hover {
+  background: rgba(238, 136, 117, 0.05);
   border-color: #ee8875;
   color: #ee8875;
 }
@@ -371,6 +391,146 @@ onMounted(async () => {
 .prescription-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(238, 136, 117, 0.4);
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  gap: 24px;
+  background: white;
+  border-radius: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.loading-spinner {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+.spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+.spinner-ring:nth-child(1) {
+  border-top-color: #ee8875;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+.spinner-ring:nth-child(2) {
+  border-right-color: #2e8b8b;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
+  animation-delay: -0.3s;
+}
+.spinner-ring:nth-child(3) {
+  border-bottom-color: #f4a58a;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation-delay: -0.6s;
+}
+.spinner-ring:nth-child(4) {
+  border-left-color: #2e6b8b;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
+  animation-delay: -0.9s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: 14px;
+  color: #9aa0b8;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Not Found Card */
+.not-found-card {
+  position: relative;
+  background: white;
+  text-align: center;
+  border-radius: 18px;
+  padding: 60px 40px;
+  border: 1px solid rgba(30, 42, 74, 0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  transition: 0.3s;
+  margin-top: 20px;
+}
+
+.not-found-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 20% 20%,
+    rgba(238, 136, 117, 0.25),
+    transparent 60%
+  );
+  opacity: 0;
+  filter: blur(40px);
+  transition: 0.35s;
+  pointer-events: none;
+}
+
+.not-found-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.not-found-card:hover::before {
+  opacity: 0.35;
+}
+
+.not-found-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.not-found-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e2a4a;
+  font-family: "Nunito", sans-serif;
+  margin-bottom: 8px;
+}
+
+.not-found-text {
+  font-size: 13px;
+  color: #9aa0b8;
+  margin-bottom: 24px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.back-to-patients {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ee8875;
+  text-decoration: none;
 }
 
 /* Patient Card */
@@ -427,10 +587,10 @@ onMounted(async () => {
   border-radius: 50%;
   opacity: 0.3;
   filter: blur(8px);
-  animation: pulse 3s infinite;
+  animation: avatarPulse 3s infinite;
 }
 
-@keyframes pulse {
+@keyframes avatarPulse {
   0%,
   100% {
     opacity: 0.3;
@@ -636,6 +796,81 @@ onMounted(async () => {
   transform: translateX(4px);
 }
 
+/* Prescriptions Loading */
+.prescriptions-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  gap: 16px;
+}
+
+.small-spinner {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.small-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.small-ring:nth-child(1) {
+  border-top-color: #ee8875;
+  animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+.small-ring:nth-child(2) {
+  border-right-color: #2e8b8b;
+  animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
+  animation-delay: -0.2s;
+}
+.small-ring:nth-child(3) {
+  border-bottom-color: #f4a58a;
+  animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation-delay: -0.4s;
+}
+
+.prescriptions-loading p {
+  font-size: 13px;
+  color: #9aa0b8;
+}
+
+/* Empty Prescriptions */
+.empty-prescriptions {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.empty-prescriptions p {
+  font-size: 13px;
+  color: #9aa0b8;
+  margin-bottom: 16px;
+}
+
+.create-first-btn {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ee8875;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.create-first-btn:hover {
+  transform: translateX(4px);
+}
+
+/* Prescriptions List */
 .prescriptions-list {
   display: flex;
   flex-direction: column;
@@ -777,6 +1012,10 @@ onMounted(async () => {
   .prescription-card:hover {
     transform: translateX(4px);
   }
+
+  .loading-state {
+    padding: 60px 20px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -806,6 +1045,14 @@ onMounted(async () => {
 
   .meta-item {
     width: fit-content;
+  }
+
+  .not-found-card {
+    padding: 40px 20px;
+  }
+
+  .not-found-title {
+    font-size: 20px;
   }
 }
 </style>
