@@ -1451,6 +1451,10 @@ onMounted(async () => {
   font-weight: 700;
   font-size: 11px;
   cursor: pointer;
+  transition: all 0.2s;
+}
+.f-btn-accent:hover {
+  transform: translateY(-2px);
 }
 .f-btn-primary {
   padding: 10px 24px;
@@ -1484,6 +1488,11 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  transition: all 0.3s ease;
+}
+.vital-box:focus-within {
+  border-color: #ee8875;
+  box-shadow: 0 0 0 3px rgba(238, 136, 117, 0.1);
 }
 .vital-label {
   font-size: 9px;
