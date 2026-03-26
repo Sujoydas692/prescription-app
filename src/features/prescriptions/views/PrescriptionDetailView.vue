@@ -224,15 +224,9 @@
             </div>
 
             <div v-if="rx.nextVisitDate" class="followup-line">
-              <strong>Follow-up within:</strong> {{ rx.nextVisitDate }}
+              <strong>Follow-up Date:</strong> {{ rx.nextVisitDate }}
             </div>
           </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="rx-footer">
-          <p class="powered-by">Powered by <strong>Doctime Limited</strong></p>
-          <p class="page-num">Page 1 of 1</p>
         </div>
       </template>
     </div>
@@ -272,44 +266,258 @@ function printRx() {
   document.title = `Prescription - ${rx.value?.patientName || "Patient"}`;
 
   const printWindow = window.open("", "_blank", "width=800,height=600");
+
+  const contentClone = printContent.cloneNode(true);
+
+  const unwantedElements = contentClone.querySelectorAll(
+    ".no-print, .preview-header, .print-btn",
+  );
+  unwantedElements.forEach((el) => el.remove());
+
+  // Calculate total pages for CSS
+  const tempDiv = document.createElement("div");
+  tempDiv.style.position = "absolute";
+  tempDiv.style.visibility = "hidden";
+  tempDiv.style.width = "800px";
+  tempDiv.innerHTML = contentClone.outerHTML;
+  document.body.appendChild(tempDiv);
+  const contentHeight = tempDiv.scrollHeight;
+  const pageHeight = 1123;
+  const totalPages = Math.max(1, Math.ceil(contentHeight / pageHeight));
+  document.body.removeChild(tempDiv);
   printWindow.document.write(`
     <!DOCTYPE html>
     <html>
-    <head><title>Prescription</title><meta charset="UTF-8">
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: white; padding: 32px 40px; color: #111; font-size: 12px; }
-      .rx-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 12px; border-bottom: 2px solid #111; }
-      .doctor-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-      .doctor-line { font-size: 11px; line-height: 1.65; color: #222; }
-      .date-block { text-align: right; font-size: 11px; line-height: 2; }
-      .date-line { display: block; }
-      .patient-strip { display: flex; gap: 24px; border-bottom: 1px solid #ccc; padding: 7px 0; flex-wrap: wrap; }
-      .pfield strong { font-weight: 700; }
-      .vitals-strip { display: flex; gap: 20px; padding: 6px 0; border-bottom: 1px dashed #ccc; }
-      .vital-pill strong { font-weight: 700; }
-      .rx-body { display: flex; min-height: 280px; }
-      .rx-left { width: 200px; flex-shrink: 0; padding: 14px 16px 14px 0; border-right: 1px solid #999; }
-      .rx-right { flex: 1; padding: 14px 0 14px 20px; }
-      .left-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-      .left-divider { border-bottom: 1px solid #ddd; margin: 10px 0; }
-      .left-section { margin-bottom: 14px; }
-      .complaint-list { list-style: disc; padding-left: 18px; font-size: 12px; line-height: 2.1; }
-      .complaint-para { font-size: 12px; line-height: 1.6; }
-      .rx-symbol { font-size: 36px; font-weight: 700; font-family: 'Times New Roman', serif; margin-bottom: 12px; line-height: 1; }
-      .medicine-item { margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px dashed #ddd; }
-      .medicine-item:last-child { border-bottom: none; }
-      .med-name { font-size: 13px; margin-bottom: 4px; }
-      .med-generic { font-size: 11px; color: #666; }
-      .med-strength { font-size: 11px; color: #444; }
-      .med-instruction { display: flex; gap: 18px; padding-left: 14px; font-size: 11px; color: #333; flex-wrap: wrap; }
-      .med-dosage { font-weight: 600; }
-      .followup-line { margin-top: 20px; font-size: 13px; font-weight: 700; }
-      .rx-footer { display: flex; justify-content: space-between; border-top: 1px solid #ccc; padding-top: 8px; margin-top: 16px; font-size: 10px; color: #666; }
-      .powered-by strong { color: #111; }
-      @media print { body { padding: 0; } }
-    </style>
-    </head><body>${printContent.outerHTML}</body></html>
+    <head>
+      <title>Prescription</title>
+      <meta charset="UTF-8">
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          font-family: "Nunito", sans-serif;
+          background: white;
+          padding: 20px;
+          color: #111;
+          font-size: 12px;
+          margin: 0;
+        }
+        
+        /* Hide any default browser header/footer */
+        @page {
+          margin: 1.5cm;
+          size: auto;
+        }
+        
+        /* Prescription Paper Styles */
+        .rx-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          padding-bottom: 12px;
+          border-bottom: 2px solid #111;
+          margin-bottom: 8px;
+        }
+        
+        .rx-doc-name {
+          font-size: 18px;
+          font-weight: 700;
+          margin-bottom: 4px;
+        }
+        
+        .rx-doc-line {
+          font-size: 11px;
+          line-height: 1.65;
+          color: #222;
+        }
+        
+        .rx-date-block {
+          text-align: right;
+          font-size: 11px;
+          line-height: 2;
+        }
+        
+        .rx-date-line {
+          display: block;
+        }
+        
+        .rx-patient-strip {
+          display: flex;
+          gap: 24px;
+          border-bottom: 1px solid #ccc;
+          padding: 7px 0;
+          flex-wrap: wrap;
+        }
+        
+        .rx-pfield strong {
+          font-weight: 700;
+        }
+        
+        .rx-vitals-strip {
+          display: flex;
+          gap: 20px;
+          padding: 6px 0;
+          border-bottom: 1px dashed #ccc;
+        }
+        
+        .rx-vital-pill strong {
+          font-weight: 700;
+        }
+        
+        .rx-body {
+          display: flex;
+          min-height: 280px;
+        }
+        
+        .rx-left {
+          width: 200px;
+          flex-shrink: 0;
+          padding: 14px 16px 14px 0;
+        }
+        
+        .rx-right {
+          flex: 1;
+          padding: 14px 0 14px 20px;
+        }
+        
+        .rx-left-title {
+          font-size: 13px;
+          font-weight: 700;
+          margin-bottom: 6px;
+        }
+        
+        .rx-left-divider {
+          border-bottom: 1px solid #ddd;
+          margin: 10px 0;
+        }
+        
+        .rx-left-section {
+          margin-bottom: 14px;
+        }
+        
+        .rx-complaint-list {
+          list-style: disc;
+          padding-left: 18px;
+          font-size: 12px;
+          line-height: 2.1;
+        }
+        
+        .rx-complaint-para {
+          font-size: 12px;
+          line-height: 1.6;
+        }
+        
+        .rx-symbol {
+          font-size: 36px;
+          font-weight: 700;
+          font-family: "Nunito", sans-serif;
+          margin-bottom: 12px;
+          line-height: 1;
+        }
+        
+        .rx-medicine-item {
+          margin-bottom: 14px;
+          padding-bottom: 10px;
+          border-bottom: 1px dashed #ddd;
+        }
+        
+        .rx-medicine-item:last-child {
+          border-bottom: none;
+        }
+        
+        .rx-med-name {
+          font-size: 13px;
+          margin-bottom: 4px;
+        }
+        
+        .rx-med-strength {
+          font-size: 11px;
+          color: #444;
+        }
+        
+        .rx-med-instruction {
+          display: flex;
+          gap: 18px;
+          padding-left: 14px;
+          font-size: 11px;
+          color: #333;
+          flex-wrap: wrap;
+        }
+        
+        .rx-med-dosage {
+          font-weight: 600;
+        }
+        
+        .rx-followup {
+          margin-top: 20px;
+          font-size: 13px;
+          font-weight: 700;
+        }
+        
+        /* Footer with Page Number and Powered By */
+        .rx-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-top: 1px solid #ccc;
+          padding: 8px 20px;
+          margin-top: 16px;
+          font-size: 10px;
+          color: #666;
+          background: white;
+        }
+        
+        .rx-powered {
+          font-size: 10px;
+          color: #666;
+        }
+        
+        .rx-powered strong {
+          font-weight: 700;
+          color: #111;
+        }
+        
+        .rx-page-number {
+          font-size: 10px;
+          color: #666;
+        }
+        
+        @media print {
+          @page {
+            size: A4;
+            margin: 1.5cm;
+            @bottom-left {
+              content: "Powered by Prescription App";
+              font-size: 13px;
+              color: #666;
+              border-top: 1px solid #ccc;
+              padding-top: 8px;
+            }
+            @bottom-right {
+              content: "Page " counter(page) " of ${totalPages}";
+              font-size: 13px;
+              color: #666;
+              border-top: 1px solid #ccc;
+              padding-top: 8px;
+            }
+          }
+          
+          .rx-footer {
+            display: none;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="print-container">
+        ${contentClone.outerHTML}
+      </div>
+    </body>
+    </html>
   `);
   printWindow.document.close();
   printWindow.focus();
@@ -629,7 +837,7 @@ onMounted(() => store.fetchById(route.params.id));
 .rx-symbol {
   font-size: 38px;
   font-weight: 700;
-  font-family: "Times New Roman", Georgia, serif;
+  font-family: "Nunito", sans-serif;
   color: #111;
   margin-bottom: 14px;
   line-height: 1;
@@ -699,21 +907,6 @@ onMounted(() => store.fetchById(route.params.id));
   font-size: 13.5px;
   font-weight: 700;
   color: #000;
-}
-
-/* Footer */
-.rx-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #ddd;
-  padding: 8px 28px;
-  font-size: 10.5px;
-  color: #666;
-}
-.powered-by strong {
-  font-weight: 700;
-  color: #111;
 }
 
 /* Responsive */

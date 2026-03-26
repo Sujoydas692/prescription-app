@@ -46,14 +46,6 @@
                 class="f-control"
               />
             </div>
-            <div class="f-group">
-              <label class="f-label">Next Visit Date</label>
-              <input
-                v-model="form.nextVisitDate"
-                type="date"
-                class="f-control"
-              />
-            </div>
           </div>
         </div>
 
@@ -319,7 +311,7 @@
                 Cancel
               </button>
               <button @click="addMedicine" class="f-btn-primary">
-                Add Medicine ✓
+                Add Medicine
               </button>
             </div>
           </div>
@@ -338,11 +330,13 @@
               placeholder="Additional instructions, notes..."
             ></textarea>
           </div>
+
           <div class="f-card">
             <h3 class="f-card-title mb-4">
               <span class="f-icon">📅</span> Tests & Follow-up
             </h3>
-            <div class="space-y-3">
+            <div class="space-y-4">
+              <!-- Tests Advised -->
               <div class="f-group">
                 <label class="f-label">Tests Advised</label>
                 <div class="flex gap-2">
@@ -356,6 +350,8 @@
                   <button @click="addTest" class="f-btn-accent">+ Add</button>
                 </div>
               </div>
+
+              <!-- Test Tags -->
               <div class="flex flex-wrap gap-2 min-h-8">
                 <span
                   v-for="(t, i) in form.tests"
@@ -372,6 +368,29 @@
                   </button>
                 </span>
               </div>
+
+              <!-- Separator Line -->
+              <div class="relative my-2">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-xs">
+                  <span class="bg-white px-2 text-gray-400">Follow-up</span>
+                </div>
+              </div>
+
+              <!-- Next Visit Date -->
+              <div class="f-group">
+                <label class="f-label">Follow-up Date</label>
+                <input
+                  v-model="form.nextVisitDate"
+                  type="date"
+                  class="f-control"
+                />
+                <p class="text-[10px] text-gray-400 mt-1">
+                  Optional - recommended date for follow-up
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -384,19 +403,14 @@
           <button
             @click="onSubmit"
             :disabled="store.loading"
-            class="px-6 py-2.5 rounded-xl text-white font-bold text-[13px] transition-all hover:opacity-90 disabled:opacity-50"
-            style="
-              background: linear-gradient(135deg, #ee8875, #2e6b8b);
-              font-family: &quot;Nunito&quot;, sans-serif;
-              box-shadow: 0 3px 14px rgba(238, 136, 117, 0.35);
-            "
+            class="f-btn-primary"
           >
             {{
               store.loading
                 ? "Saving..."
                 : isEdit
-                  ? "✓ Update"
-                  : "✓ Save Prescription"
+                  ? "Update"
+                  : "Save Prescription"
             }}
           </button>
         </div>
@@ -584,15 +598,10 @@
             </div>
 
             <div v-if="form.nextVisitDate" class="rx-followup">
-              <strong>Follow-up within:</strong>
+              <strong>Follow-up Date:</strong>
               {{ formatDateForFollowUp(form.nextVisitDate) }}
             </div>
           </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="rx-footer">
-          <p class="rx-powered">Powered by <strong>Prescription App</strong></p>
         </div>
       </div>
     </div>
@@ -749,6 +758,7 @@ function clearForm() {
     notes: "",
     medicines: [],
     tests: [],
+    nextVisitDate: "",
   });
   Object.assign(vitals, { bp: "", pulse: "", temp: "", spo2: "" });
 }
@@ -756,48 +766,270 @@ function clearForm() {
 function printPreview() {
   const printContent = document.getElementById("prescription-preview");
   const printWindow = window.open("", "_blank", "width=800,height=600");
+
+  const contentClone = printContent.cloneNode(true);
+
+  const unwantedElements = contentClone.querySelectorAll(
+    ".no-print, .preview-header, .print-btn",
+  );
+  unwantedElements.forEach((el) => el.remove());
+
+  // Calculate total pages for CSS
+  const tempDiv = document.createElement("div");
+  tempDiv.style.position = "absolute";
+  tempDiv.style.visibility = "hidden";
+  tempDiv.style.width = "800px";
+  tempDiv.innerHTML = contentClone.outerHTML;
+  document.body.appendChild(tempDiv);
+  const contentHeight = tempDiv.scrollHeight;
+  const pageHeight = 1123;
+  const totalPages = Math.max(1, Math.ceil(contentHeight / pageHeight));
+  document.body.removeChild(tempDiv);
+
   printWindow.document.write(`
-    <!DOCTYPE html><html><head><title>Prescription</title><meta charset="UTF-8">
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: white; padding: 32px 40px; color: #111; font-size: 12px; }
-      .rx-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 12px; border-bottom: 2px solid #111; }
-      .rx-doc-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-      .rx-doc-line { font-size: 11px; line-height: 1.65; color: #222; }
-      .rx-date-block { text-align: right; font-size: 11px; line-height: 2; }
-      .rx-date-line { display: block; }
-      .rx-patient-strip { display: flex; gap: 24px; border-bottom: 1px solid #ccc; padding: 7px 0; flex-wrap: wrap; }
-      .rx-pfield strong { font-weight: 700; }
-      .rx-vitals-strip { display: flex; gap: 20px; padding: 6px 0; border-bottom: 1px dashed #ccc; }
-      .rx-vital-pill strong { font-weight: 700; }
-      .rx-body { display: flex; min-height: 280px; }
-      .rx-left { width: 200px; flex-shrink: 0; padding: 14px 16px 14px 0; border-right: 1px solid #999; }
-      .rx-right { flex: 1; padding: 14px 0 14px 20px; }
-      .rx-left-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-      .rx-left-divider { border-bottom: 1px solid #ddd; margin: 10px 0; }
-      .rx-left-section { margin-bottom: 14px; }
-      .rx-complaint-list { list-style: disc; padding-left: 18px; font-size: 12px; line-height: 2.1; }
-      .rx-complaint-para { font-size: 12px; line-height: 1.6; }
-      .rx-symbol { font-size: 36px; font-weight: 700; font-family: 'Times New Roman', serif; margin-bottom: 12px; line-height: 1; }
-      .rx-medicine-item { margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px dashed #ddd; }
-      .rx-medicine-item:last-child { border-bottom: none; }
-      .rx-med-name { font-size: 13px; margin-bottom: 4px; }
-      .rx-med-strength { font-size: 11px; color: #444; }
-      .rx-med-instruction { display: flex; gap: 18px; padding-left: 14px; font-size: 11px; color: #333; flex-wrap: wrap; }
-      .rx-med-dosage { font-weight: 600; }
-      .rx-followup { margin-top: 20px; font-size: 13px; font-weight: 700; }
-      .rx-footer { display: flex; justify-content: space-between; border-top: 1px solid #ccc; padding-top: 8px; margin-top: 16px; font-size: 10px; color: #666; }
-      .rx-powered strong { color: #111; }
-      @media print { body { padding: 0; } }
-    </style>
-    </head><body>${printContent.outerHTML}</body></html>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Prescription</title>
+      <meta charset="UTF-8">
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          font-family: "Nunito", sans-serif;
+          background: white;
+          padding: 20px;
+          color: #111;
+          font-size: 12px;
+          margin: 0;
+        }
+        
+        /* Hide any default browser header/footer */
+        @page {
+          margin: 1.5cm;
+          size: auto;
+        }
+        
+        /* Prescription Paper Styles */
+        .rx-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          padding-bottom: 12px;
+          border-bottom: 2px solid #111;
+          margin-bottom: 8px;
+        }
+        
+        .rx-doc-name {
+          font-size: 18px;
+          font-weight: 700;
+          margin-bottom: 4px;
+        }
+        
+        .rx-doc-line {
+          font-size: 11px;
+          line-height: 1.65;
+          color: #222;
+        }
+        
+        .rx-date-block {
+          text-align: right;
+          font-size: 11px;
+          line-height: 2;
+        }
+        
+        .rx-date-line {
+          display: block;
+        }
+        
+        .rx-patient-strip {
+          display: flex;
+          gap: 24px;
+          border-bottom: 1px solid #ccc;
+          padding: 7px 0;
+          flex-wrap: wrap;
+        }
+        
+        .rx-pfield strong {
+          font-weight: 700;
+        }
+        
+        .rx-vitals-strip {
+          display: flex;
+          gap: 20px;
+          padding: 6px 0;
+          border-bottom: 1px dashed #ccc;
+        }
+        
+        .rx-vital-pill strong {
+          font-weight: 700;
+        }
+        
+        .rx-body {
+          display: flex;
+          min-height: 280px;
+        }
+        
+        .rx-left {
+          width: 200px;
+          flex-shrink: 0;
+          padding: 14px 16px 14px 0;
+        }
+        
+        .rx-right {
+          flex: 1;
+          padding: 14px 0 14px 20px;
+        }
+        
+        .rx-left-title {
+          font-size: 13px;
+          font-weight: 700;
+          margin-bottom: 6px;
+        }
+        
+        .rx-left-divider {
+          border-bottom: 1px solid #ddd;
+          margin: 10px 0;
+        }
+        
+        .rx-left-section {
+          margin-bottom: 14px;
+        }
+        
+        .rx-complaint-list {
+          list-style: disc;
+          padding-left: 18px;
+          font-size: 12px;
+          line-height: 2.1;
+        }
+        
+        .rx-complaint-para {
+          font-size: 12px;
+          line-height: 1.6;
+        }
+        
+        .rx-symbol {
+          font-size: 36px;
+          font-weight: 700;
+          font-family: "Nunito", sans-serif;
+          margin-bottom: 12px;
+          line-height: 1;
+        }
+        
+        .rx-medicine-item {
+          margin-bottom: 14px;
+          padding-bottom: 10px;
+          border-bottom: 1px dashed #ddd;
+        }
+        
+        .rx-medicine-item:last-child {
+          border-bottom: none;
+        }
+        
+        .rx-med-name {
+          font-size: 13px;
+          margin-bottom: 4px;
+        }
+        
+        .rx-med-strength {
+          font-size: 11px;
+          color: #444;
+        }
+        
+        .rx-med-instruction {
+          display: flex;
+          gap: 18px;
+          padding-left: 14px;
+          font-size: 11px;
+          color: #333;
+          flex-wrap: wrap;
+        }
+        
+        .rx-med-dosage {
+          font-weight: 600;
+        }
+        
+        .rx-followup {
+          margin-top: 20px;
+          font-size: 13px;
+          font-weight: 700;
+        }
+        
+        /* Footer with Page Number and Powered By */
+        .rx-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-top: 1px solid #ccc;
+          padding: 8px 20px;
+          margin-top: 16px;
+          font-size: 10px;
+          color: #666;
+          background: white;
+        }
+        
+        .rx-powered {
+          font-size: 10px;
+          color: #666;
+        }
+        
+        .rx-powered strong {
+          font-weight: 700;
+          color: #111;
+        }
+        
+        .rx-page-number {
+          font-size: 10px;
+          color: #666;
+        }
+        
+        @media print {
+          @page {
+            size: A4;
+            margin: 1.5cm;
+            @bottom-left {
+              content: "Powered by Prescription App";
+              font-size: 13px;
+              color: #666;
+              border-top: 1px solid #ccc;
+              padding-top: 8px;
+            }
+            @bottom-right {
+              content: "Page " counter(page) " of ${totalPages}";
+              font-size: 13px;
+              color: #666;
+              border-top: 1px solid #ccc;
+              padding-top: 8px;
+            }
+          }
+          
+          .rx-footer {
+            display: none;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="print-container">
+        ${contentClone.outerHTML}
+      </div>
+    </body>
+    </html>
   `);
+
   printWindow.document.close();
   printWindow.focus();
-  printWindow.onload = () => {
+
+  setTimeout(() => {
     printWindow.print();
-    printWindow.onafterprint = () => printWindow.close();
-  };
+    printWindow.onafterprint = () => {
+      printWindow.close();
+    };
+  }, 300);
 }
 
 async function onSubmit() {
@@ -933,11 +1165,9 @@ onMounted(async () => {
 /* ══════════════════════════════════ */
 .rx-paper {
   background: white;
-  border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(30, 42, 74, 0.08);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Nunito", sans-serif;
   font-size: 12px;
   color: #111;
 }
@@ -1016,7 +1246,6 @@ onMounted(async () => {
   width: 175px;
   flex-shrink: 0;
   padding: 14px 14px 14px 22px;
-  border-right: 1px solid #bbb;
 }
 .rx-left-section {
   margin-bottom: 14px;
@@ -1052,7 +1281,7 @@ onMounted(async () => {
 .rx-symbol {
   font-size: 34px;
   font-weight: 700;
-  font-family: "Times New Roman", Georgia, serif;
+  font-family: "Nunito", sans-serif;
   color: #111;
   margin-bottom: 12px;
   line-height: 1;
@@ -1118,21 +1347,6 @@ onMounted(async () => {
   font-size: 12.5px;
   font-weight: 700;
   color: #000;
-}
-
-/* Footer */
-.rx-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #ddd;
-  padding: 7px 22px;
-  font-size: 10px;
-  color: #666;
-}
-.rx-powered strong {
-  font-weight: 700;
-  color: #111;
 }
 
 /* ══════════════════════════════════ */
@@ -1213,12 +1427,19 @@ onMounted(async () => {
   background: transparent;
   border: 1.5px solid rgba(30, 42, 74, 0.15);
   color: #5a6282;
-  padding: 6px 12px;
-  border-radius: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.f-btn-ghost:hover {
+  background: rgba(238, 136, 117, 0.05);
+  border-color: #ee8875;
+  color: #ee8875;
 }
 .f-btn-accent {
   background: rgba(238, 136, 117, 0.12);
@@ -1232,15 +1453,27 @@ onMounted(async () => {
   cursor: pointer;
 }
 .f-btn-primary {
-  background: linear-gradient(135deg, #ee8875, #2e6b8b);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 10px 24px;
+  border-radius: 10px;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
   font-size: 12px;
+  color: #1e2a4a;
+  background: #f4a58a;
+  box-shadow: 0 6px 14px rgba(238, 136, 117, 0.35);
+  transition: all 0.3s;
+  border: none;
   cursor: pointer;
+}
+
+.f-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(238, 136, 117, 0.45);
+}
+
+.f-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .vital-box {
   padding: 10px;
