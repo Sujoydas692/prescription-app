@@ -66,9 +66,17 @@
     <!-- Empty State -->
     <div v-else-if="filtered.length === 0" class="empty-state">
       <div class="empty-icon">📋</div>
-      <h3 class="empty-title">No prescriptions yet</h3>
-      <p class="empty-desc">Create your first prescription to get started</p>
-      <RouterLink to="/prescriptions/new" class="empty-btn">
+      <h3 class="empty-title">
+        {{ search ? "No results found" : "No prescriptions yet" }}
+      </h3>
+      <p class="empty-desc">
+        {{
+          search
+            ? `No matches for "${search}"`
+            : "Create your first prescription to get started"
+        }}
+      </p>
+      <RouterLink v-if="!search" to="/prescriptions/new" class="empty-btn">
         Create your first prescription →
       </RouterLink>
     </div>
