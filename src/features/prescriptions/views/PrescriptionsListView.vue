@@ -48,6 +48,7 @@
         type="text"
         placeholder="Search by patient or diagnosis..."
         class="search-input"
+        @input="handleSearch"
       />
     </div>
 
@@ -184,36 +185,100 @@
         </div>
       </div>
     </div>
+
+    <Pagination
+      v-if="totalPages > 1"
+      v-model:current-page="currentPage"
+      :total-pages="totalPages"
+      :total-items="totalItems"
+      :page-size="pageSize"
+      @page-change="handlePageChange"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import dayjs from "dayjs";
 import { toast } from "vue3-toastify";
 import { usePrescriptionsStore } from "../stores/prescriptionsStore";
+import Pagination from "@/components/common/Pagination.vue";
 
 const store = usePrescriptionsStore();
 const search = ref("");
+
+const currentPage = ref(1);
+const pageSize = ref(12);
+const totalItems = ref(0);
+const totalPages = ref(0);
+const allPrescriptions = ref([]);
+
+let searchTimeout;
+
 const fmtDate = (d) => (d ? dayjs(d).format("MMM D, YYYY") : "—");
-const filtered = computed(() =>
-  store.prescriptions.filter(
-    (r) =>
-      !search.value ||
-      r.patientName?.toLowerCase().includes(search.value.toLowerCase()) ||
-      r.diagnosis?.toLowerCase().includes(search.value.toLowerCase()),
-  ),
-);
+
+const filtered = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  let prescriptions = allPrescriptions.value;
+
+  // Apply search filter
+  if (search.value) {
+    prescriptions = prescriptions.filter(
+      (r) =>
+        r.patientName?.toLowerCase().includes(search.value.toLowerCase()) ||
+        r.diagnosis?.toLowerCase().includes(search.value.toLowerCase()),
+    );
+  }
+
+  // Update total items and pages
+  totalItems.value = prescriptions.length;
+  totalPages.value = Math.ceil(totalItems.value / pageSize.value);
+
+  // Return paginated prescriptions
+  return prescriptions.slice(start, end);
+});
+
+async function loadPrescriptions() {
+  await store.fetchAll();
+  allPrescriptions.value = [...store.prescriptions];
+  totalItems.value = allPrescriptions.value.length;
+  totalPages.value = Math.ceil(totalItems.value / pageSize.value);
+  currentPage.value = 1;
+}
+
+// Handle search with debounce
+function handleSearch() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    currentPage.value = 1;
+  }, 300);
+}
+
+// Handle page change
+function handlePageChange(page) {
+  currentPage.value = page;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 async function del(rx) {
   if (!confirm(`Delete prescription for ${rx.patientName}?`)) return;
   try {
     await store.deletePrescription(rx.prescriptionId);
     toast.success("Deleted");
+    await loadPrescriptions();
   } catch {
     toast.error("Failed to delete");
   }
 }
-onMounted(() => store.fetchAll());
+
+watch(search, () => {
+  currentPage.value = 1;
+});
+
+onMounted(() => {
+  loadPrescriptions();
+});
 </script>
 
 <style scoped>
@@ -515,6 +580,7 @@ onMounted(() => store.fetchAll());
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 24px;
+  margin-bottom: 32px;
 }
 
 .prescription-card {

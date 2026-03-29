@@ -47,6 +47,7 @@
             type="text"
             placeholder="Search brand name or generic..."
             class="search-input"
+            @input="handleBrandSearch"
           />
         </div>
         <button
@@ -230,6 +231,15 @@
           </div>
         </div>
       </div>
+
+      <Pagination
+        v-if="brandsTotalPages > 1"
+        v-model:current-page="brandsCurrentPage"
+        :total-pages="brandsTotalPages"
+        :total-items="brandsTotalItems"
+        :page-size="brandsPageSize"
+        @page-change="handleBrandsPageChange"
+      />
     </div>
 
     <!-- ── GENERICS TAB ── -->
@@ -254,6 +264,7 @@
             type="text"
             placeholder="Search generic name..."
             class="search-input"
+            @input="handleGenericSearch"
           />
         </div>
       </div>
@@ -313,12 +324,21 @@
           </div>
         </div>
       </div>
+
+      <Pagination
+        v-if="genericsTotalPages > 1"
+        v-model:current-page="genericsCurrentPage"
+        :total-pages="genericsTotalPages"
+        :total-items="genericsTotalItems"
+        :page-size="genericsPageSize"
+        @page-change="handleGenericsPageChange"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted } from "vue";
+import { ref, computed, reactive, onMounted, watch } from "vue";
 import { toast } from "vue3-toastify";
 import { useMedicinesStore } from "../stores/medicinesStore";
 
@@ -327,6 +347,23 @@ const activeTab = ref("brands");
 const brandSearch = ref("");
 const genericSearch = ref("");
 const showAddBrand = ref(false);
+
+// Brands pagination
+const brandsCurrentPage = ref(1);
+const brandsPageSize = ref(12);
+const brandsTotalItems = ref(0);
+const brandsTotalPages = ref(0);
+const allBrands = ref([]);
+
+// Generics pagination
+const genericsCurrentPage = ref(1);
+const genericsPageSize = ref(12);
+const genericsTotalItems = ref(0);
+const genericsTotalPages = ref(0);
+const allGenerics = ref([]);
+
+let brandSearchTimeout;
+let genericSearchTimeout;
 
 const tabs = [
   { id: "brands", label: "Drug Brands", icon: "💊" },
@@ -342,22 +379,73 @@ const newBrand = reactive({
   price: "",
 });
 
-const filteredBrands = computed(() =>
-  (store.brands || []).filter(
-    (b) =>
-      !brandSearch.value ||
-      b.brandName?.toLowerCase().includes(brandSearch.value.toLowerCase()) ||
-      b.genericName?.toLowerCase().includes(brandSearch.value.toLowerCase()),
-  ),
-);
+// Filtered and paginated brands
+const filteredBrands = computed(() => {
+  const start = (brandsCurrentPage.value - 1) * brandsPageSize.value;
+  const end = start + brandsPageSize.value;
+  let brands = allBrands.value;
 
-const filteredGenerics = computed(() =>
-  (store.generics || []).filter(
-    (g) =>
-      !genericSearch.value ||
+  if (brandSearch.value) {
+    brands = brands.filter(
+      (b) =>
+        b.brandName?.toLowerCase().includes(brandSearch.value.toLowerCase()) ||
+        b.genericName?.toLowerCase().includes(brandSearch.value.toLowerCase()),
+    );
+  }
+
+  brandsTotalItems.value = brands.length;
+  brandsTotalPages.value = Math.ceil(
+    brandsTotalItems.value / brandsPageSize.value,
+  );
+  return brands.slice(start, end);
+});
+
+// Filtered and paginated generics
+const filteredGenerics = computed(() => {
+  const start = (genericsCurrentPage.value - 1) * genericsPageSize.value;
+  const end = start + genericsPageSize.value;
+  let generics = allGenerics.value;
+
+  if (genericSearch.value) {
+    generics = generics.filter((g) =>
       g.genericName?.toLowerCase().includes(genericSearch.value.toLowerCase()),
-  ),
-);
+    );
+  }
+
+  genericsTotalItems.value = generics.length;
+  genericsTotalPages.value = Math.ceil(
+    genericsTotalItems.value / genericsPageSize.value,
+  );
+  return generics.slice(start, end);
+});
+
+// Handle brand search with debounce
+function handleBrandSearch() {
+  clearTimeout(brandSearchTimeout);
+  brandSearchTimeout = setTimeout(() => {
+    brandsCurrentPage.value = 1;
+  }, 300);
+}
+
+// Handle generic search with debounce
+function handleGenericSearch() {
+  clearTimeout(genericSearchTimeout);
+  genericSearchTimeout = setTimeout(() => {
+    genericsCurrentPage.value = 1;
+  }, 300);
+}
+
+// Handle brands page change
+function handleBrandsPageChange(page) {
+  brandsCurrentPage.value = page;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// Handle generics page change
+function handleGenericsPageChange(page) {
+  genericsCurrentPage.value = page;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
 async function saveBrand() {
   if (!newBrand.brandName.trim()) {
@@ -381,8 +469,37 @@ async function saveBrand() {
   }
 }
 
+async function loadBrands() {
+  await store.fetchBrands();
+  allBrands.value = [...store.brands];
+  brandsTotalItems.value = allBrands.value.length;
+  brandsTotalPages.value = Math.ceil(
+    brandsTotalItems.value / brandsPageSize.value,
+  );
+  brandsCurrentPage.value = 1;
+}
+
+async function loadGenerics() {
+  await store.fetchGenerics();
+  allGenerics.value = [...store.generics];
+  genericsTotalItems.value = allGenerics.value.length;
+  genericsTotalPages.value = Math.ceil(
+    genericsTotalItems.value / genericsPageSize.value,
+  );
+  genericsCurrentPage.value = 1;
+}
+
+// Watch for search changes
+watch(brandSearch, () => {
+  brandsCurrentPage.value = 1;
+});
+
+watch(genericSearch, () => {
+  genericsCurrentPage.value = 1;
+});
+
 onMounted(async () => {
-  await Promise.all([store.fetchBrands(), store.fetchGenerics()]);
+  await Promise.all([loadBrands(), loadGenerics()]);
 });
 </script>
 
