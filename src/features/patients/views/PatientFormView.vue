@@ -77,13 +77,14 @@
           :disabled="store.loading"
           class="f-btn-primary"
         >
-          {{
+          <div v-if="store.loading" class="btn-spinner"></div>
+          <span>{{
             store.loading
               ? "Saving..."
               : isEdit
                 ? "Update Patient"
                 : "Add Patient"
-          }}
+          }}</span>
         </button>
       </div>
     </div>
@@ -257,6 +258,9 @@ onMounted(async () => {
 }
 
 .f-btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 10px 24px;
   border-radius: 10px;
   font-family: "Nunito", sans-serif;
@@ -277,6 +281,24 @@ onMounted(async () => {
 .f-btn-primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive */
