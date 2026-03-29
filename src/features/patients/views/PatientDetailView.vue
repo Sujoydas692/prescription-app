@@ -399,11 +399,39 @@ onMounted(async () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px 24px;
-  gap: 24px;
   background: white;
-  border-radius: 28px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+  text-align: center;
+  border-radius: 18px;
+  padding: 60px 40px;
+  border: 1px solid rgba(30, 42, 74, 0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  transition: 0.3s;
+  margin-top: 20px;
+}
+
+.loading-state::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 20% 20%,
+    rgba(238, 136, 117, 0.25),
+    transparent 60%
+  );
+  opacity: 0;
+  filter: blur(40px);
+  transition: 0.35s;
+  pointer-events: none;
+}
+
+.loading-state:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.loading-state:hover::before {
+  opacity: 0.35;
 }
 
 .loading-spinner {
@@ -453,6 +481,7 @@ onMounted(async () => {
   font-size: 14px;
   color: #9aa0b8;
   font-weight: 500;
+  margin-top: 20px;
   letter-spacing: 0.5px;
   animation: pulse 1.5s ease-in-out infinite;
 }

@@ -264,15 +264,14 @@ onMounted(async () => {
   font-size: 12px;
   color: #1e2a4a;
   background: #f4a58a;
-  box-shadow: 0 6px 14px rgba(238, 136, 117, 0.35);
   transition: all 0.3s;
   border: none;
   cursor: pointer;
 }
 
 .f-btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(238, 136, 117, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(238, 136, 117, 0.3);
 }
 
 .f-btn-primary:disabled {

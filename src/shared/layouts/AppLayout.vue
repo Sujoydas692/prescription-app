@@ -638,7 +638,6 @@ const pageConfigs = {
     group: "Locations",
     title: "Chambers",
     topbar: "Chambers",
-    addRoute: "/chambers/new",
     subLinks: [],
   },
   "/profile": {

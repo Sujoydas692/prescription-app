@@ -1,119 +1,171 @@
 <template>
-  <div class="space-y-5 fade-in-up">
-    <!-- Search + Add -->
-    <div class="search-add-container">
-      <div class="search-wrapper">
-        <input
-          v-model="search"
-          type="text"
-          placeholder="Search by name or mobile..."
-          class="search-input"
-        />
-
+  <div class="patients-container fade-in-up">
+    <!-- Header Section -->
+    <div class="patients-header">
+      <div class="header-left">
+        <div class="header-icon">👥</div>
+        <div>
+          <h2 class="header-title">Your Patients</h2>
+          <p class="header-subtitle">Manage your patient records</p>
+        </div>
+      </div>
+      <RouterLink to="/patients/new" class="add-patient-btn">
         <svg
-          class="search-icon"
-          fill="none"
+          width="18"
+          height="18"
           viewBox="0 0 24 24"
+          fill="none"
           stroke="currentColor"
         >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            d="M12 4v16m8-8H4"
           />
         </svg>
-      </div>
-
-      <RouterLink to="/patients/new" class="add-btn">
-        + Add Patient
+        <span>Add Patient</span>
       </RouterLink>
     </div>
 
-    <!-- Patients table -->
-    <div class="patients-card">
-      <div v-if="store.loading" class="loading-state">
-        <div class="loading-spinner">
-          <div class="spinner-ring"></div>
-          <div class="spinner-ring"></div>
-          <div class="spinner-ring"></div>
-          <div class="spinner-ring"></div>
-        </div>
-        <p class="loading-text">Loading Patients...</p>
+    <!-- Search Bar -->
+    <div class="search-wrapper">
+      <svg
+        class="search-icon"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        />
+      </svg>
+      <input
+        v-model="search"
+        type="text"
+        placeholder="Search by name or mobile..."
+        class="search-input"
+      />
+    </div>
+
+    <!-- Loading State -->
+    <div v-if="store.loading" class="loading-state">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
       </div>
+      <p class="loading-text">Loading patients...</p>
+    </div>
 
-      <div v-else-if="filtered.length === 0" class="text-center py-16">
-        <div class="text-4xl mb-3">👥</div>
+    <!-- Empty State -->
+    <div v-else-if="filtered.length === 0" class="empty-state">
+      <div class="empty-icon">👥</div>
+      <h3 class="empty-title">No patients yet</h3>
+      <p class="empty-desc">Add your first patient to get started</p>
+      <RouterLink to="/patients/new" class="empty-btn">
+        Add your first patient →
+      </RouterLink>
+    </div>
 
-        <p class="empty-title">No patients found</p>
-
-        <RouterLink to="/patients/new" class="empty-link">
-          Add your first patient →
-        </RouterLink>
-      </div>
-
-      <table v-else class="w-full patients-table">
-        <thead>
-          <tr>
-            <th class="pt-th">Name</th>
-            <th class="pt-th">Mobile</th>
-            <th class="pt-th">Age</th>
-            <th class="pt-th text-right">Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr
-            v-for="p in filtered"
-            :key="p.patientId"
-            class="patient-row"
+    <!-- Patients Grid - Modern Cards -->
+    <div v-else class="patients-grid">
+      <div v-for="p in filtered" :key="p.patientId" class="patient-card">
+        <div class="card-gradient"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <div class="avatar">
+              {{ p.fullName?.charAt(0)?.toUpperCase() || "?" }}
+            </div>
+            <div class="action-buttons">
+              <RouterLink
+                :to="`/patients/${p.patientId}/edit`"
+                class="edit-btn"
+                title="Edit patient"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+              </RouterLink>
+              <button @click="del(p)" class="delete-btn" title="Delete patient">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <h3
+            class="patient-name"
             @click="$router.push(`/patients/${p.patientId}`)"
           >
-            <td class="pt-td">
-              <div class="flex items-center gap-3" style="gap: 10px">
-                <div class="avatar">
-                  {{ p.fullName?.charAt(0)?.toUpperCase() || "?" }}
-                </div>
-
-                <span class="patient-name">
-                  {{ p.fullName }}
-                </span>
-              </div>
-            </td>
-
-            <td class="pt-td text-[13px]" style="color: #9aa0b8">
-              {{ p.mobileNumber }}
-            </td>
-
-            <td class="pt-td text-[13px]" style="color: #9aa0b8">
-              {{ p.age ? `${p.age} yrs` : "—" }}
-            </td>
-
-            <td class="pt-td text-right" @click.stop>
-              <div
-                class="flex items-center justify-end gap-2"
-                style="gap: 10px"
+            {{ p.fullName }}
+          </h3>
+          <div class="patient-details">
+            <div class="detail-item">
+              <span class="detail-icon">📞</span>
+              <span class="detail-text">{{ p.mobileNumber }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-icon">📅</span>
+              <span class="detail-text">{{
+                p.age ? `${p.age} yrs` : "—"
+              }}</span>
+            </div>
+            <div class="detail-item" v-if="p.gender">
+              <span class="detail-icon">👤</span>
+              <span class="detail-text">{{ p.gender }}</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <RouterLink
+              :to="`/patients/${p.patientId}`"
+              class="view-details-btn"
+            >
+              View Details
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
               >
-                <RouterLink
-                  :to="`/patients/${p.patientId}`"
-                  class="act-btn view"
-                >
-                  View
-                </RouterLink>
-
-                <RouterLink
-                  :to="`/patients/${p.patientId}/edit`"
-                  class="act-btn edit"
-                >
-                  Edit
-                </RouterLink>
-
-                <button @click="del(p)" class="act-btn delete">Delete</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </RouterLink>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -122,8 +174,10 @@
 import { ref, computed, onMounted } from "vue";
 import { toast } from "vue3-toastify";
 import { usePatientsStore } from "../stores/patientsStore";
+
 const store = usePatientsStore();
 const search = ref("");
+
 const filtered = computed(() =>
   store.patients.filter(
     (p) =>
@@ -132,125 +186,125 @@ const filtered = computed(() =>
       p.mobileNumber?.includes(search.value),
   ),
 );
+
 async function del(p) {
-  if (!confirm(`Delete patient "${p.fullName}"?`)) return;
+  if (!confirm(`Delete patient "${p.fullName}"? This action cannot be undone.`))
+    return;
   try {
     await store.deletePatient(p.patientId);
-    toast.success("Deleted");
+    toast.success("Patient deleted successfully!");
   } catch {
-    toast.error("Failed");
+    toast.error("Failed to delete patient");
   }
 }
+
 onMounted(() => store.fetchAll());
 </script>
 
 <style scoped>
-/* ========== Loading Animation Styles ========== */
-.loading-state {
+.patients-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ========== Header Styles ========== */
+.patients-header {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(
+    135deg,
+    rgba(238, 136, 117, 0.15),
+    rgba(46, 107, 139, 0.1)
+  );
+  border-radius: 16px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
-  gap: 20px;
+  font-size: 24px;
 }
 
-.loading-spinner {
-  position: relative;
-  width: 60px;
-  height: 60px;
+.header-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #1e2a4a;
+  font-family: "Nunito", sans-serif;
+  margin-bottom: 4px;
 }
 
-.spinner-ring {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 3px solid transparent;
-}
-
-.spinner-ring:nth-child(1) {
-  border-top-color: #ee8875;
-  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-}
-
-.spinner-ring:nth-child(2) {
-  border-right-color: #2e8b8b;
-  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
-  animation-delay: -0.3s;
-}
-
-.spinner-ring:nth-child(3) {
-  border-bottom-color: #f4a58a;
-  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  animation-delay: -0.6s;
-}
-
-.spinner-ring:nth-child(4) {
-  border-left-color: #2e6b8b;
-  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
-  animation-delay: -0.9s;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.loading-text {
+.header-subtitle {
   font-size: 13px;
   color: #9aa0b8;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  animation: pulse 1.5s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-/* Search and Add Container */
-.search-add-container {
+.add-patient-btn {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  width: 100%;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "Nunito", sans-serif;
+  background: #f4a58a;
+  color: #1e2a4a;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-/* Search Wrapper */
+.add-patient-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(238, 136, 117, 0.3);
+}
+
+/* ========== Search Styles ========== */
 .search-wrapper {
   position: relative;
-  flex: 1;
-  min-width: 200px;
+  margin-bottom: 24px;
 }
 
-/* Search Input */
 .search-input {
   width: 100%;
   padding: 12px 44px 12px 16px;
   border-radius: 12px;
-  border: 1px solid #c6cad6;
-  background: rgba(255, 255, 255, 0.8);
+  border: 1.5px solid rgba(30, 42, 74, 0.12);
+  background: white;
   font-size: 14px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  outline: none;
   font-family: "DM Sans", sans-serif;
   color: #1e2a4a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-  box-sizing: border-box;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Search Icon */
+.search-input:hover {
+  background: white;
+  border-color: rgba(238, 136, 117, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.search-input:focus {
+  border-color: #ee8875;
+  box-shadow:
+    0 0 0 4px rgba(238, 136, 117, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+  background: white;
+}
+
 .search-icon {
   position: absolute;
   right: 16px;
@@ -262,22 +316,6 @@ onMounted(() => store.fetchAll());
   pointer-events: none;
   transition: all 0.3s ease;
   stroke-width: 2;
-}
-
-/* Hover Effects */
-.search-input:hover {
-  background: white;
-  border-color: rgba(238, 136, 117, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
-
-/* Focus Effects */
-.search-input:focus {
-  border-color: #ee8875;
-  box-shadow:
-    0 0 0 4px rgba(238, 136, 117, 0.1),
-    0 4px 12px rgba(0, 0, 0, 0.05);
-  background: white;
 }
 
 .search-input:focus + .search-icon {
@@ -298,45 +336,24 @@ onMounted(() => store.fetchAll());
   transform: translateX(4px);
 }
 
-/* Add Button */
-.add-btn {
+/* ========== Loading State ========== */
+.loading-state {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #1e2a4a;
-  background: #f4a58a;
-  font-family: "Nunito", sans-serif;
-  box-shadow: 0 6px 18px rgba(238, 136, 117, 0.35);
-  transition: all 0.3s ease;
-  text-decoration: none;
-  white-space: nowrap;
-  min-width: 130px;
-}
-
-.add-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(238, 136, 117, 0.45);
-}
-
-/* Patients Card */
-.patients-card {
+  text-align: center;
   position: relative;
+  padding: 60px 40px;
   background: white;
-  border-radius: 18px;
-  padding: 22px;
+  border-radius: 28px;
   border: 1px solid rgba(30, 42, 74, 0.06);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
-  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  gap: 20px;
   transition: 0.3s;
-  margin-top: 20px;
 }
 
-.patients-card::before {
+.loading-state::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -351,339 +368,334 @@ onMounted(() => store.fetchAll());
   pointer-events: none;
 }
 
-.patients-card:hover {
+.loading-state:hover {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
-.patients-card:hover::before {
+.loading-state:hover::before {
   opacity: 0.35;
 }
 
-/* Table Styles */
-.patients-table {
+.loading-spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.spinner-ring {
+  position: absolute;
   width: 100%;
-  border-collapse: collapse;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid transparent;
 }
 
-.patients-table thead {
-  background: rgba(238, 136, 117, 0.07);
+.spinner-ring:nth-child(1) {
+  border-top-color: #ee8875;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+.spinner-ring:nth-child(2) {
+  border-right-color: #2e8b8b;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
+  animation-delay: -0.3s;
+}
+.spinner-ring:nth-child(3) {
+  border-bottom-color: #f4a58a;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation-delay: -0.6s;
+}
+.spinner-ring:nth-child(4) {
+  border-left-color: #2e6b8b;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
+  animation-delay: -0.9s;
 }
 
-.pt-th {
-  padding: 12px 16px;
-  font-size: 10px;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: 13px;
+  color: #9aa0b8;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ========== Empty State ========== */
+.empty-state {
+  position: relative;
+  background: white;
+  text-align: center;
+  border-radius: 28px;
+  padding: 60px 40px;
+  border: 1px solid rgba(30, 42, 74, 0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  transition: 0.3s;
+  margin-top: 20px;
+}
+
+.empty-state::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 20% 20%,
+    rgba(238, 136, 117, 0.25),
+    transparent 60%
+  );
+  opacity: 0;
+  filter: blur(40px);
+  transition: 0.35s;
+  pointer-events: none;
+}
+
+.empty-state:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.empty-state:hover::before {
+  opacity: 0.35;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 8px;
+}
+
+.empty-title {
+  font-size: 20px;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #ee8875;
+  color: #1e2a4a;
   font-family: "Nunito", sans-serif;
-  text-align: left;
 }
 
-.pt-td {
-  padding: 14px 16px;
+.empty-desc {
+  font-size: 13px;
+  color: #9aa0b8;
+  margin-bottom: 10px;
 }
 
-.patient-row {
-  border-bottom: 1px solid rgba(30, 42, 74, 0.06);
-  cursor: pointer;
-  transition: 0.2s;
+.empty-btn {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ee8875;
+  text-decoration: none;
 }
 
-.patient-row:hover {
-  background: rgba(238, 136, 117, 0.05);
-  transform: translateX(2px);
+/* ========== Patients Grid ========== */
+.patients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.patient-card {
+  position: relative;
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(30, 42, 74, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.patient-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.card-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ee8875, #2e8b8b, #f4a58a);
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
 .avatar {
-  width: 32px;
-  height: 32px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
+  background: #ee8875;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 22px;
   font-weight: 700;
   color: white;
-  background: linear-gradient(135deg, #ee8875, #2e6b8b);
   flex-shrink: 0;
 }
 
-.patient-name {
-  font-size: 13px;
-  font-weight: 700;
-  color: #1e2a4a;
-  font-family: "Nunito", sans-serif;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.action-buttons {
+  display: flex;
+  gap: 8px;
 }
 
-/* Action Buttons */
-.act-btn {
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  font-family: "Nunito", sans-serif;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  transition: 0.2s;
+.edit-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(46, 107, 139, 0.08);
   border: none;
-}
-
-.act-btn:hover {
-  transform: translateY(-1px);
-}
-
-.view {
-  background: rgba(46, 107, 139, 0.12);
   color: #2e6b8b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
 }
 
-.edit {
-  background: rgba(238, 136, 117, 0.12);
-  color: #c05030;
+.edit-btn:hover {
+  background: rgba(46, 107, 139, 0.15);
+  transform: scale(1.05);
 }
 
-.delete {
-  background: rgba(224, 82, 82, 0.1);
+.delete-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(224, 82, 82, 0.08);
+  border: none;
   color: #e05252;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-/* Empty State */
-.empty-title {
-  font-size: 14px;
+.delete-btn:hover {
+  background: rgba(224, 82, 82, 0.15);
+  transform: scale(1.05);
+}
+
+.patient-name {
+  font-size: 18px;
   font-weight: 800;
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
-  margin-bottom: 4px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
-.empty-link {
+.patient-name:hover {
+  color: #ee8875;
+}
+
+.patient-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(30, 42, 74, 0.06);
+  border-bottom: 1px solid rgba(30, 42, 74, 0.06);
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 13px;
+}
+
+.detail-icon {
+  font-size: 14px;
+  width: 24px;
+}
+
+.detail-text {
+  color: #5e6a85;
+}
+
+.card-footer {
+  text-align: right;
+}
+
+.view-details-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
   font-weight: 700;
   color: #ee8875;
   text-decoration: none;
+  transition: all 0.2s;
 }
 
-/* ========== Responsive Design ========== */
-
-/* Desktop (992px to 1199px) */
-@media (min-width: 992px) and (max-width: 1199px) {
-  .search-input {
-    font-size: 14px;
-    padding: 12px 44px 12px 16px;
-  }
+.view-details-btn:hover {
+  gap: 10px;
+  color: #c05030;
 }
 
-/* Tablet (768px to 991px) */
-@media (min-width: 768px) and (max-width: 991px) {
-  .search-add-container {
-    gap: 10px;
-  }
-
-  .search-input {
-    font-size: 13px;
-    padding: 10px 40px 10px 14px;
-  }
-
-  .search-icon {
-    right: 14px;
-    width: 16px;
-    height: 16px;
-  }
-
-  .add-btn {
-    padding: 10px 16px;
-    font-size: 13px;
-    min-width: 120px;
-  }
-
-  .patients-card {
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .patients-container {
     padding: 16px;
   }
 
-  .pt-th,
-  .pt-td {
-    padding: 10px 12px;
+  .patients-grid {
+    grid-template-columns: 1fr;
   }
 
-  .pt-td:last-child {
-    white-space: nowrap;
+  .header-title {
+    font-size: 20px;
   }
 
-  .act-btn {
-    padding: 5px 10px;
-    font-size: 10px;
-  }
-}
-
-/* Mobile Large (576px to 767px) */
-@media (min-width: 576px) and (max-width: 767px) {
-  .search-add-container {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
-  .search-wrapper {
-    width: 100%;
-  }
-
-  .search-input {
-    font-size: 14px;
-    padding: 12px 44px 12px 16px;
-  }
-
-  .search-icon {
-    right: 16px;
-    width: 18px;
-    height: 18px;
-  }
-
-  .add-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 12px 20px;
-    font-size: 14px;
-  }
-
-  .patients-card {
-    padding: 16px;
-    overflow-x: auto;
-  }
-
-  .patients-table {
-    min-width: 600px;
+  .header-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
   }
 }
 
-/* Mobile Small (up to 575px) */
-@media (max-width: 575px) {
-  .search-add-container {
+@media (max-width: 480px) {
+  .patients-header {
     flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+    align-items: flex-start;
   }
 
-  .search-wrapper {
-    width: 100%;
-  }
-
-  .search-input {
-    font-size: 14px;
-    padding: 12px 44px 12px 14px;
-  }
-
-  .search-icon {
-    right: 14px;
-    width: 18px;
-    height: 18px;
-  }
-
-  .add-btn {
+  .add-patient-btn {
     width: 100%;
     justify-content: center;
-    padding: 12px 16px;
-    font-size: 14px;
   }
 
-  .patients-card {
-    padding: 12px;
-    overflow-x: auto;
-    border-radius: 14px;
-  }
-
-  .patients-table {
-    min-width: 550px;
-  }
-
-  .pt-th,
-  .pt-td {
-    padding: 10px 8px;
-    font-size: 12px;
-  }
-
-  .pt-th {
-    font-size: 9px;
-  }
-
-  .avatar {
-    width: 28px;
-    height: 28px;
-    font-size: 10px;
-  }
-
-  .patient-name {
-    font-size: 12px;
-  }
-
-  .act-btn {
-    padding: 4px 8px;
-    font-size: 10px;
-  }
-
-  .flex.items-center.gap-3 {
-    gap: 6px !important;
-  }
-
-  .flex.items-center.justify-end.gap-2 {
-    gap: 4px !important;
+  .card-header {
     flex-wrap: wrap;
-  }
-}
-
-/* Very Small Mobile (up to 375px) */
-@media (max-width: 375px) {
-  .search-input {
-    font-size: 13px;
-    padding: 10px 40px 10px 12px;
+    gap: 12px;
   }
 
-  .search-icon {
-    right: 12px;
-    width: 16px;
-    height: 16px;
-  }
-
-  .add-btn {
-    font-size: 13px;
-    padding: 10px 14px;
-  }
-
-  .patients-card {
-    padding: 10px;
-  }
-
-  .pt-th,
-  .pt-td {
-    padding: 8px 6px;
-  }
-
-  .pt-th {
-    font-size: 8px;
-  }
-
-  .pt-td {
-    font-size: 11px;
-  }
-
-  .avatar {
-    width: 24px;
-    height: 24px;
-    font-size: 9px;
-  }
-
-  .patient-name {
-    font-size: 11px;
-  }
-
-  .act-btn {
-    padding: 3px 6px;
-    font-size: 9px;
+  .action-buttons {
+    margin-left: auto;
   }
 }
 </style>

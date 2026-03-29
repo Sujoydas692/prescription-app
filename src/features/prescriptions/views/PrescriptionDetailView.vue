@@ -285,6 +285,7 @@ function printRx() {
   const pageHeight = 1123;
   const totalPages = Math.max(1, Math.ceil(contentHeight / pageHeight));
   document.body.removeChild(tempDiv);
+
   printWindow.document.write(`
     <!DOCTYPE html>
     <html>
@@ -801,7 +802,6 @@ onMounted(() => store.fetchById(route.params.id));
   width: 215px;
   flex-shrink: 0;
   padding: 18px 18px 18px 28px;
-  border-right: 1px solid #bbb;
 }
 .left-section {
   margin-bottom: 16px;

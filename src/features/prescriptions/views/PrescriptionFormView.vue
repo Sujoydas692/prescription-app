@@ -9,7 +9,12 @@
             <h3 class="f-card-title">
               <span class="f-icon">👤</span> Patient Information
             </h3>
-            <button @click="clearForm" class="f-btn-ghost">🔄 Clear</button>
+            <div class="flex items-center gap-2">
+              <button @click="clearForm" class="f-btn-ghost">🔄 Clear</button>
+              <button @click="$router.back()" class="f-btn-ghost">
+                ← Back
+              </button>
+            </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="f-group">
@@ -1023,13 +1028,10 @@ function printPreview() {
 
   printWindow.document.close();
   printWindow.focus();
-
-  setTimeout(() => {
+  printWindow.onload = () => {
     printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-    };
-  }, 300);
+    printWindow.onafterprint = () => printWindow.close();
+  };
 }
 
 async function onSubmit() {
@@ -1464,15 +1466,14 @@ onMounted(async () => {
   font-size: 12px;
   color: #1e2a4a;
   background: #f4a58a;
-  box-shadow: 0 6px 14px rgba(238, 136, 117, 0.35);
   transition: all 0.3s;
   border: none;
   cursor: pointer;
 }
 
 .f-btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(238, 136, 117, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(238, 136, 117, 0.3);
 }
 
 .f-btn-primary:disabled {
