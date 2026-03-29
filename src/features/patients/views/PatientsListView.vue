@@ -48,6 +48,7 @@
         type="text"
         placeholder="Search by name or mobile..."
         class="search-input"
+        @input="handleSearch"
       />
     </div>
 
@@ -167,25 +168,77 @@
         </div>
       </div>
     </div>
+
+    <Pagination
+      v-if="totalPages > 1"
+      v-model:current-page="currentPage"
+      :total-pages="totalPages"
+      :total-items="totalItems"
+      :page-size="pageSize"
+      @page-change="handlePageChange"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { toast } from "vue3-toastify";
 import { usePatientsStore } from "../stores/patientsStore";
+import Pagination from "@/components/common/Pagination.vue";
 
 const store = usePatientsStore();
 const search = ref("");
 
-const filtered = computed(() =>
-  store.patients.filter(
-    (p) =>
-      !search.value ||
-      p.fullName?.toLowerCase().includes(search.value.toLowerCase()) ||
-      p.mobileNumber?.includes(search.value),
-  ),
-);
+const currentPage = ref(1);
+const pageSize = ref(15);
+const totalItems = ref(0);
+const totalPages = ref(0);
+const allPatients = ref([]);
+
+let searchTimeout;
+
+const filtered = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  let patients = allPatients.value;
+
+  // Apply search filter
+  if (search.value) {
+    patients = patients.filter(
+      (p) =>
+        p.fullName?.toLowerCase().includes(search.value.toLowerCase()) ||
+        p.mobileNumber?.includes(search.value),
+    );
+  }
+
+  // Update total items and pages
+  totalItems.value = patients.length;
+  totalPages.value = Math.ceil(totalItems.value / pageSize.value);
+
+  // Return paginated patients
+  return patients.slice(start, end);
+});
+
+async function loadPatients() {
+  await store.fetchAll();
+  allPatients.value = [...store.patients];
+  totalItems.value = allPatients.value.length;
+  totalPages.value = Math.ceil(totalItems.value / pageSize.value);
+}
+
+// Handle search with debounce
+function handleSearch() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    currentPage.value = 1;
+  }, 300);
+}
+
+// Handle page change
+function handlePageChange(page) {
+  currentPage.value = page;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
 async function del(p) {
   if (!confirm(`Delete patient "${p.fullName}"? This action cannot be undone.`))
@@ -193,12 +246,19 @@ async function del(p) {
   try {
     await store.deletePatient(p.patientId);
     toast.success("Patient deleted successfully!");
+    await loadPatients();
   } catch {
     toast.error("Failed to delete patient");
   }
 }
 
-onMounted(() => store.fetchAll());
+watch(search, () => {
+  currentPage.value = 1;
+});
+
+onMounted(() => {
+  loadPatients();
+});
 </script>
 
 <style scoped>
@@ -502,6 +562,7 @@ onMounted(() => store.fetchAll());
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
+  margin-bottom: 32px;
 }
 
 .patient-card {

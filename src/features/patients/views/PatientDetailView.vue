@@ -384,13 +384,12 @@ onMounted(async () => {
 .prescription-btn {
   background: #f4a58a;
   color: #1e2a4a;
-  box-shadow: 0 6px 16px rgba(238, 136, 117, 0.3);
   border: none;
 }
 
 .prescription-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(238, 136, 117, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(238, 136, 117, 0.3);
 }
 
 /* Loading State */
