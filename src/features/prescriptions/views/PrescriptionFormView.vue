@@ -9,7 +9,7 @@
             <h3 class="f-card-title">
               <span class="f-icon">👤</span> Patient Information
             </h3>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 ghost-btn-mobile">
               <button @click="clearForm" class="f-btn-ghost">🔄 Clear</button>
               <button @click="$router.back()" class="f-btn-ghost">
                 ← Back
@@ -432,7 +432,7 @@
         </div>
 
         <!-- ═══ ACTIONS ═══ -->
-        <div class="flex items-center justify-end gap-3 pb-4">
+        <div class="flex items-center justify-end gap-3 pb-4 btn-mobile">
           <RouterLink to="/prescriptions" class="f-btn-ghost px-5 py-2.5"
             >Cancel</RouterLink
           >
@@ -2035,6 +2035,10 @@ onMounted(async () => {
 
 /* Medicines Grid Responsive */
 @media (max-width: 768px) {
+  .ghost-btn-mobile {
+    display: grid;
+  }
+
   .medicines-grid {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -2053,7 +2057,31 @@ onMounted(async () => {
   }
 }
 
+@media (max-width: 640px) {
+  .f-card-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .btn-mobile {
+    flex-direction: column-reverse;
+  }
+
+  .f-btn-ghost,
+  .f-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
+  .ghost-btn-mobile {
+    display: grid;
+  }
+
   .medicine-details-grid {
     gap: 6px;
   }

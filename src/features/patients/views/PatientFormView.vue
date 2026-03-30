@@ -315,15 +315,22 @@ onMounted(async () => {
     padding: 18px;
   }
 
+  .f-card-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
   .button-section {
     flex-direction: column-reverse;
   }
 
   .f-btn-ghost,
   .f-btn-primary {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    text-align: center;
   }
 }
 </style>
