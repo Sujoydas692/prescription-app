@@ -321,6 +321,7 @@ onMounted(async () => {
 
   .f-btn-ghost,
   .f-btn-primary {
+    display: block;
     width: 100%;
     text-align: center;
   }

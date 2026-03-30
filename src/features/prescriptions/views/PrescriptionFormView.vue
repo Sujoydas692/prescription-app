@@ -118,28 +118,69 @@
         </div>
 
         <!-- ═══ MEDICINES ═══ -->
-        <div class="f-card">
-          <div class="f-card-head">
+        <div class="f-card medicines-section">
+          <div class="medicines-header">
             <h3 class="f-card-title">
               <span class="f-icon">💊</span> Medicines
-              <span class="ml-1 text-[13px] font-normal" style="color: #9aa0b8"
+              <span
+                class="ml-1 text-[13px] font-normal"
+                style="
+                  color: #9aa0b8;
+                  margin-left: -5px;
+                  margin-top: 3px;
+                  margin-right: 10px;
+                "
                 >({{ form.medicines.length }})</span
               >
             </h3>
-            <div class="flex gap-2">
+            <div class="medicine-actions">
               <button
                 v-if="form.medicines.length"
                 @click="sortMeds"
-                class="f-btn-ghost"
+                class="action-btn sort-btn"
+                title="Sort medicines"
               >
-                ⇅ Sort
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 16V4m0 0L3 8m4-4l4 4m6 12V4m0 0l-4 4m4-4l4 4"
+                  />
+                </svg>
+                <span>Sort</span>
               </button>
-              <button @click="showAddMed = !showAddMed" class="f-btn-accent">
-                + Add Medicine
+              <button
+                @click="showAddMed = !showAddMed"
+                class="action-btn add-med-btn"
+              >
+                <svg
+                  v-if="!showAddMed"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                <span>{{ showAddMed ? "Cancel" : "Add Medicine" }}</span>
               </button>
             </div>
           </div>
 
+          <!-- Empty State -->
           <div
             v-if="form.medicines.length === 0 && !showAddMed"
             class="text-center py-10"
@@ -150,132 +191,129 @@
             </p>
           </div>
 
-          <div v-if="form.medicines.length" class="overflow-x-auto -mx-1">
-            <table class="w-full">
-              <thead>
-                <tr style="background: rgba(238, 136, 117, 0.07)">
-                  <th class="rx-th">#</th>
-                  <th class="rx-th">Medicine</th>
-                  <th class="rx-th">Dosage</th>
-                  <th class="rx-th">Frequency</th>
-                  <th class="rx-th">Duration</th>
-                  <th class="rx-th">Instruction</th>
-                  <th class="rx-th"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(med, i) in form.medicines"
-                  :key="i"
-                  class="border-b transition-colors"
-                  style="border-color: rgba(30, 42, 74, 0.06)"
+          <!-- Medicines Grid - Modern Cards -->
+          <div v-else class="medicines-grid">
+            <div
+              v-for="(med, i) in form.medicines"
+              :key="i"
+              class="medicine-card"
+            >
+              <div class="card-header">
+                <div class="medicine-number">{{ i + 1 }}</div>
+                <button
+                  @click="form.medicines.splice(i, 1)"
+                  class="delete-med-btn"
+                  title="Remove medicine"
                 >
-                  <td
-                    class="rx-td font-mono text-[12px]"
-                    style="color: #9aa0b8; width: 36px"
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
                   >
-                    {{ String(i + 1).padStart(2, "0") }}
-                  </td>
-                  <td class="rx-td">
-                    <p
-                      class="font-bold text-[13px]"
-                      style="
-                        color: #1e2a4a;
-                        font-family: &quot;Nunito&quot;, sans-serif;
-                      "
-                    >
-                      {{ med.brandSearch }}
-                    </p>
-                    <p class="text-[11px]" style="color: #9aa0b8">
-                      {{ med.type }}
-                    </p>
-                  </td>
-                  <td class="rx-td">
-                    <span
-                      class="inline-block px-2.5 py-1 rounded-full text-[11px] font-bold"
-                      style="
-                        background: rgba(46, 107, 139, 0.1);
-                        color: #2e6b8b;
-                      "
-                      >{{ med.dosage || "—" }}</span
-                    >
-                  </td>
-                  <td class="rx-td">
-                    <select v-model="med.frequency" class="f-control-sm">
-                      <option>1+0+0</option>
-                      <option>0+1+0</option>
-                      <option>0+0+1</option>
-                      <option>1+1+0</option>
-                      <option>1+0+1</option>
-                      <option>0+1+1</option>
-                      <option>1+1+1</option>
-                      <option>SOS</option>
-                    </select>
-                  </td>
-                  <td class="rx-td">
-                    <input
-                      v-model="med.duration"
-                      class="f-control-sm"
-                      placeholder="7 days"
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
                     />
-                  </td>
-                  <td class="rx-td">
-                    <input
-                      v-model="med.instruction"
-                      class="f-control-sm"
-                      placeholder="After meal"
-                    />
-                  </td>
-                  <td class="rx-td">
-                    <button
-                      @click="form.medicines.splice(i, 1)"
-                      class="w-7 h-7 rounded-lg flex items-center justify-center text-[12px] transition-all"
-                      style="background: rgba(224, 82, 82, 0.1); color: #e05252"
-                    >
-                      ✕
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="medicine-name-section">
+                <h4 class="medicine-name">{{ med.brandSearch }}</h4>
+                <span class="medicine-type-badge">{{ med.type }}</span>
+              </div>
+
+              <div class="medicine-details-grid">
+                <div class="detail-item">
+                  <span class="detail-icon">💊</span>
+                  <span class="detail-label">Dosage</span>
+                  <span class="detail-value">{{ med.dosage || "—" }}</span>
+                </div>
+
+                <div class="detail-item">
+                  <span class="detail-icon">⏰</span>
+                  <span class="detail-label">Frequency</span>
+                  <select v-model="med.frequency" class="frequency-select">
+                    <option>1+0+0</option>
+                    <option>0+1+0</option>
+                    <option>0+0+1</option>
+                    <option>1+1+0</option>
+                    <option>1+0+1</option>
+                    <option>0+1+1</option>
+                    <option>1+1+1</option>
+                    <option>SOS</option>
+                  </select>
+                </div>
+
+                <div class="detail-item">
+                  <span class="detail-icon">📅</span>
+                  <span class="detail-label">Duration</span>
+                  <input
+                    v-model="med.duration"
+                    class="duration-input"
+                    placeholder="7 days"
+                  />
+                </div>
+
+                <div class="detail-item full-width">
+                  <span class="detail-icon">📝</span>
+                  <span class="detail-label">Instruction</span>
+                  <input
+                    v-model="med.instruction"
+                    class="instruction-input"
+                    placeholder="After meal"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Add medicine row -->
-          <div
-            v-if="showAddMed"
-            class="mt-4 p-4 rounded-xl"
-            style="
-              background: rgba(238, 136, 117, 0.05);
-              border: 1.5px dashed rgba(238, 136, 117, 0.3);
-            "
-          >
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
-              <div class="f-group md:col-span-2">
-                <label class="f-label">Brand Name *</label>
+          <!-- Add Medicine Modal -->
+          <div v-if="showAddMed" class="add-medicine-modal">
+            <div class="modal-header">
+              <div class="modal-icon">✨</div>
+              <h4 class="modal-title">Add New Medicine</h4>
+              <button @click="showAddMed = false" class="modal-close-btn">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group full-width">
+                <label class="form-label">Brand Name *</label>
                 <div class="relative">
                   <input
                     v-model="newMed.brandSearch"
                     @input="onBrandSearch"
                     type="text"
-                    class="f-control"
+                    class="modal-input"
                     placeholder="Search brand..."
                   />
-                  <div
-                    v-if="brandResults.length"
-                    class="absolute top-full left-0 right-0 bg-white rounded-xl shadow-xl z-30 max-h-44 overflow-y-auto mt-1"
-                    style="border: 1px solid rgba(30, 42, 74, 0.1)"
-                  >
+                  <div v-if="brandResults.length" class="brand-search-dropdown">
                     <button
                       v-for="b in brandResults"
                       :key="b.brandId"
                       @click="selectBrand(b)"
-                      class="w-full text-left px-3 py-2.5 text-[12px] border-b last:border-0 transition-colors"
-                      style="border-color: rgba(30, 42, 74, 0.06)"
+                      class="brand-option"
                     >
-                      <span class="font-bold" style="color: #1e2a4a">{{
-                        b.brandName
-                      }}</span>
-                      <span class="ml-2 text-[11px]" style="color: #9aa0b8"
+                      <span class="brand-name">{{ b.brandName }}</span>
+                      <span class="brand-detail"
                         >{{ b.genericName }} · {{ b.form }}
                         {{ b.strength }}</span
                       >
@@ -283,9 +321,9 @@
                   </div>
                 </div>
               </div>
-              <div class="f-group">
-                <label class="f-label">Type</label>
-                <select v-model="newMed.type" class="f-control">
+              <div class="form-group">
+                <label class="form-label">Type</label>
+                <select v-model="newMed.type" class="modal-select">
                   <option>Tablet</option>
                   <option>Capsule</option>
                   <option>Syrup</option>
@@ -294,28 +332,28 @@
                   <option>Drops</option>
                 </select>
               </div>
-              <div class="f-group">
-                <label class="f-label">Dosage</label>
+              <div class="form-group">
+                <label class="form-label">Dosage</label>
                 <input
                   v-model="newMed.dosage"
-                  class="f-control"
+                  class="modal-input"
                   placeholder="500mg"
                 />
               </div>
-              <div class="f-group">
-                <label class="f-label">Duration</label>
+              <div class="form-group">
+                <label class="form-label">Duration</label>
                 <input
                   v-model="newMed.duration"
-                  class="f-control"
+                  class="modal-input"
                   placeholder="7 days"
                 />
               </div>
             </div>
-            <div class="flex gap-2 mt-3 justify-end">
-              <button @click="showAddMed = false" class="f-btn-ghost">
+            <div class="modal-footer">
+              <button @click="showAddMed = false" class="modal-cancel-btn">
                 Cancel
               </button>
-              <button @click="addMedicine" class="f-btn-primary">
+              <button @click="addMedicine" class="modal-save-btn">
                 Add Medicine
               </button>
             </div>
@@ -341,7 +379,6 @@
               <span class="f-icon">📅</span> Tests & Follow-up
             </h3>
             <div class="space-y-4">
-              <!-- Tests Advised -->
               <div class="f-group">
                 <label class="f-label">Tests Advised</label>
                 <div class="flex gap-2">
@@ -355,8 +392,6 @@
                   <button @click="addTest" class="f-btn-accent">+ Add</button>
                 </div>
               </div>
-
-              <!-- Test Tags -->
               <div class="flex flex-wrap gap-2 min-h-8">
                 <span
                   v-for="(t, i) in form.tests"
@@ -373,8 +408,6 @@
                   </button>
                 </span>
               </div>
-
-              <!-- Separator Line -->
               <div class="relative my-2">
                 <div class="absolute inset-0 flex items-center">
                   <div class="w-full border-t border-gray-200"></div>
@@ -383,8 +416,6 @@
                   <span class="bg-white px-2 text-gray-400">Follow-up</span>
                 </div>
               </div>
-
-              <!-- Next Visit Date -->
               <div class="f-group">
                 <label class="f-label">Follow-up Date</label>
                 <input
@@ -1163,6 +1194,438 @@ onMounted(async () => {
   transform: translateY(-1px);
 }
 
+/* Medicines Section */
+.medicines-section {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(30, 42, 74, 0.07);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+}
+
+.medicines-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 15;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(30, 42, 74, 0.08);
+}
+
+.medicine-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: "Nunito", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.sort-btn {
+  background: rgba(46, 107, 139, 0.1);
+  color: #2e6b8b;
+}
+
+.sort-btn:hover {
+  background: rgba(46, 107, 139, 0.2);
+  transform: translateY(-1px);
+}
+
+.add-med-btn {
+  background: rgba(238, 136, 117, 0.12);
+  color: #c05030;
+  border: 1px solid rgba(238, 136, 117, 0.3);
+}
+
+.add-med-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(238, 136, 117, 0.4);
+}
+
+/* ========== Medicines Grid - Compact Card Styles ========== */
+.medicines-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 4px 2px;
+  margin-bottom: 16px;
+}
+
+/* Custom Scrollbar */
+.medicines-grid::-webkit-scrollbar {
+  width: 4px;
+}
+
+.medicines-grid::-webkit-scrollbar-track {
+  background: rgba(30, 42, 74, 0.05);
+  border-radius: 4px;
+}
+
+.medicines-grid::-webkit-scrollbar-thumb {
+  background: rgba(238, 136, 117, 0.3);
+  border-radius: 4px;
+}
+
+.medicines-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(238, 136, 117, 0.5);
+}
+
+.medicine-card {
+  background: #fafcff;
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid rgba(30, 42, 74, 0.08);
+  transition: all 0.3s ease;
+}
+
+.medicine-card:hover {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.medicine-number {
+  width: 24px;
+  height: 24px;
+  background: #ee8875;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.delete-med-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(224, 82, 82, 0.08);
+  color: #e05252;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-med-btn:hover {
+  background: rgba(224, 82, 82, 0.15);
+  transform: scale(1.05);
+}
+
+.delete-med-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.medicine-name-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(30, 42, 74, 0.06);
+}
+
+.medicine-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1e2a4a;
+  font-family: "Nunito", sans-serif;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.medicine-type-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(46, 107, 139, 0.1);
+  color: #2e6b8b;
+  white-space: nowrap;
+}
+
+.medicine-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detail-item.full-width {
+  grid-column: span 2;
+}
+
+.detail-icon {
+  font-size: 10px;
+}
+
+.detail-label {
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9aa0b8;
+}
+
+.detail-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e2a4a;
+}
+
+.frequency-select,
+.duration-input,
+.instruction-input {
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(30, 42, 74, 0.12);
+  background: white;
+  font-size: 10px;
+  font-family: "DM Sans", sans-serif;
+  color: #1e2a4a;
+  outline: none;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.frequency-select:focus,
+.duration-input:focus,
+.instruction-input:focus {
+  border-color: #ee8875;
+  box-shadow: 0 0 0 2px rgba(238, 136, 117, 0.1);
+}
+
+/* Add Medicine Modal */
+.add-medicine-modal {
+  margin: 0 0 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffffff, #fef9f7);
+  border: 1px solid rgba(238, 136, 117, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  animation: modalSlide 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  position: relative;
+  z-index: 20;
+}
+
+@keyframes modalSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(238, 136, 117, 0.2);
+}
+
+.modal-icon {
+  font-size: 20px;
+}
+
+.modal-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e2a4a;
+  font-family: "Nunito", sans-serif;
+}
+
+.modal-close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(30, 42, 74, 0.08);
+  border: none;
+  color: #5a6282;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: rgba(238, 136, 117, 0.15);
+  color: #ee8875;
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+.form-label {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9aa0b8;
+}
+
+.modal-input,
+.modal-select {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(30, 42, 74, 0.13);
+  background: white;
+  font-size: 11px;
+  font-family: "DM Sans", sans-serif;
+  outline: none;
+  width: 100%;
+}
+
+.modal-input:focus,
+.modal-select:focus {
+  border-color: #ee8875;
+  box-shadow: 0 0 0 2px rgba(238, 136, 117, 0.1);
+}
+
+.brand-search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  z-index: 30;
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 4px;
+  border: 1px solid rgba(30, 42, 74, 0.1);
+}
+
+.brand-option {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 11px;
+  border-bottom: 1px solid rgba(30, 42, 74, 0.06);
+  transition: all 0.2s;
+  cursor: pointer;
+  background: white;
+}
+
+.brand-option:last-child {
+  border-bottom: none;
+}
+
+.brand-option:hover {
+  background: rgba(238, 136, 117, 0.06);
+}
+
+.brand-name {
+  font-weight: 700;
+  color: #1e2a4a;
+  display: block;
+  font-size: 11px;
+}
+
+.brand-detail {
+  font-size: 9px;
+  color: #9aa0b8;
+}
+
+/* Modal Footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-cancel-btn {
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  background: transparent;
+  border: 1.5px solid rgba(30, 42, 74, 0.15);
+  color: #5a6282;
+  cursor: pointer;
+}
+
+.modal-cancel-btn:hover {
+  background: rgba(238, 136, 117, 0.05);
+  border-color: #ee8875;
+  color: #ee8875;
+}
+
+.modal-save-btn {
+  padding: 6px 20px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #f4a58a;
+  color: #1e2a4a;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(238, 136, 117, 0.3);
+}
+
 /* ══════════════════════════════════ */
 /* PRESCRIPTION PREVIEW — image style */
 /* ══════════════════════════════════ */
@@ -1457,7 +1920,8 @@ onMounted(async () => {
   transition: all 0.2s;
 }
 .f-btn-accent:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(238, 136, 117, 0.4);
 }
 .f-btn-primary {
   display: flex;
@@ -1566,6 +2030,48 @@ onMounted(async () => {
   }
   .form-section {
     max-height: none;
+  }
+}
+
+/* Medicines Grid Responsive */
+@media (max-width: 768px) {
+  .medicines-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-height: 350px;
+  }
+
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+  .form-group.full-width {
+    grid-column: span 1;
+  }
+
+  .medicine-card {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .medicine-details-grid {
+    gap: 6px;
+  }
+
+  .frequency-select,
+  .duration-input,
+  .instruction-input {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+
+  .medicine-name {
+    font-size: 12px;
+  }
+
+  .medicine-type-badge {
+    font-size: 8px;
+    padding: 2px 6px;
   }
 }
 </style>
