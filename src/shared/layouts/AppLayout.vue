@@ -71,9 +71,9 @@
       </div>
 
       <div class="mobile-top-actions">
-        <button @click="$router.push('/settings')" class="mobile-top-btn">
+        <!-- <button @click="$router.push('/settings')" class="mobile-top-btn">
           <IconSettings class="mobile-top-icon" />
-        </button>
+        </button> -->
 
         <button @click="$router.push('/profile')" class="mobile-profile-btn">
           <span class="mobile-profile-badge">
@@ -218,7 +218,7 @@
         <div
           class="bottom-section flex flex-col items-center gap-3 w-full px-3"
         >
-          <button
+          <!-- <button
             @click="$router.push('/settings')"
             class="icon-btn group relative"
             :class="{ 'is-active': isActive('/settings') }"
@@ -228,7 +228,7 @@
               <IconSettings class="icon-svg" />
             </div>
             <span class="tooltip">Settings</span>
-          </button>
+          </button> -->
 
           <div
             class="profile-avatar group relative"
@@ -241,8 +241,6 @@
                 {{ authStore.doctorName?.charAt(0)?.toUpperCase() || "D" }}
               </span>
             </div>
-
-            <span class="online-indicator"></span>
 
             <span class="tooltip">Profile</span>
           </div>
@@ -1342,18 +1340,6 @@ function handleLogout() {
   font-family: "Nunito", sans-serif;
 }
 
-.online-indicator {
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  width: 10px;
-  height: 10px;
-  background: #4caf50;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  z-index: 2;
-}
-
 .bottom-section {
   margin-top: 0;
   padding-bottom: 24px;
@@ -1524,7 +1510,8 @@ function handleLogout() {
   }
 
   .top-date {
-    padding: 3px 14px;
+    display: flex;
+    padding: 1px 14px;
     border-radius: 999px;
     font-size: 10px;
     font-weight: 700;
@@ -1536,22 +1523,19 @@ function handleLogout() {
   }
 
   .mobile-greeting {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 20px;
-    
+    margin: 0 auto;
+    text-align: center;
   }
 
   .mobile-greeting-emoji {
-    font-size: 16px;
+    font-size: 14px;
     font-family:
       "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
     color: unset;
   }
 
   .mobile-greeting-text {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     color: #2e8b8b;
   }
