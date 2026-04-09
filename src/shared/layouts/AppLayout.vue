@@ -259,13 +259,13 @@
               {{ pageConfig.title }}
             </h2>
 
-            <RouterLink
+            <!-- <RouterLink
               v-if="pageConfig.addRoute"
               :to="pageConfig.addRoute"
               class="add-circle"
             >
               <span class="plus">+</span>
-            </RouterLink>
+            </RouterLink> -->
           </div>
         </div>
 
@@ -295,6 +295,7 @@
         <div class="sidebar-dynamic-content">
           <!-- Patients List -->
           <div v-if="route.path.includes('/patients')" class="dynamic-list">
+            <div class="list-header mt-3">Patients Lists</div>
             <div
               v-for="patient in filteredPatients"
               :key="patient.patientId"
@@ -330,6 +331,7 @@
             v-else-if="route.path.includes('/prescriptions')"
             class="dynamic-list"
           >
+            <div class="list-header mt-3">Patient's Prescriptions</div>
             <div
               v-for="prescription in filteredPrescriptions"
               :key="prescription.id"
@@ -360,6 +362,7 @@
             v-else-if="route.path.includes('/medicines')"
             class="dynamic-list"
           >
+            <div class="list-header mt-3">Medicines Lists</div>
             <div
               v-for="medicine in filteredMedicines"
               :key="medicine.id"
@@ -388,6 +391,7 @@
             v-else-if="route.path.includes('/chambers')"
             class="dynamic-list"
           >
+            <div class="list-header mt-3">Chambers Lists</div>
             <div
               v-for="chamber in filteredChambers"
               :key="chamber.id"
@@ -430,6 +434,10 @@
                 </div>
                 <div class="item-diagnosis">{{ prescription.diagnosis }}</div>
               </div>
+            </div>
+
+            <div v-if="recentPrescriptions.length === 0" class="empty-state">
+              <p>No recent prescriptions found</p>
             </div>
           </div>
 
@@ -615,14 +623,14 @@ const pageConfigs = {
     group: "Directory",
     title: "Patients",
     topbar: "Patients",
-    addRoute: "/patients/new",
+    addRoute: null,
     subLinks: [],
   },
   "/prescriptions": {
     group: "Records",
     title: "Prescriptions",
     topbar: "Prescriptions",
-    addRoute: "/prescriptions/new",
+    addRoute: null,
     subLinks: [],
   },
   "/medicines": {
