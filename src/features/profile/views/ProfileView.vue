@@ -156,7 +156,7 @@
       </div>
 
       <!-- Preferences Card -->
-      <div class="profile-card">
+      <!-- <div class="profile-card">
         <div class="card-header">
           <div class="header-left">
             <div class="header-icon">⚙️</div>
@@ -189,7 +189,7 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Account Card -->
       <div class="profile-card danger-card">

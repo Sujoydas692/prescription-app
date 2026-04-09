@@ -948,7 +948,7 @@ function handleLogout() {
 .sidebar-search {
   width: 100%;
   padding: 12px 16px 12px 40px;
-  border-radius: 20px;
+  border-radius: 12px;
   border: 2px solid transparent;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(4px);
@@ -961,7 +961,7 @@ function handleLogout() {
 
 .search-icon {
   position: absolute;
-  left: 217px;
+  left: 220px;
   top: 50%;
   transform: translateY(-50%);
   width: 18px;

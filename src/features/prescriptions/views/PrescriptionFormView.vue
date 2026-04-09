@@ -229,13 +229,11 @@
 
               <div class="medicine-details-grid">
                 <div class="detail-item">
-                  <span class="detail-icon">💊</span>
                   <span class="detail-label">Dosage</span>
                   <span class="detail-value">{{ med.dosage || "—" }}</span>
                 </div>
 
                 <div class="detail-item">
-                  <span class="detail-icon">⏰</span>
                   <span class="detail-label">Frequency</span>
                   <select v-model="med.frequency" class="frequency-select">
                     <option>1+0+0</option>
@@ -250,7 +248,6 @@
                 </div>
 
                 <div class="detail-item">
-                  <span class="detail-icon">📅</span>
                   <span class="detail-label">Duration</span>
                   <input
                     v-model="med.duration"
@@ -260,12 +257,11 @@
                 </div>
 
                 <div class="detail-item full-width">
-                  <span class="detail-icon">📝</span>
                   <span class="detail-label">Instruction</span>
                   <input
                     v-model="med.instruction"
                     class="instruction-input"
-                    placeholder="After meal"
+                    placeholder="After meal..."
                   />
                 </div>
               </div>
@@ -1393,12 +1389,8 @@ onMounted(async () => {
   grid-column: span 2;
 }
 
-.detail-icon {
-  font-size: 10px;
-}
-
 .detail-label {
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
