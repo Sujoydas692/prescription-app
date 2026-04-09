@@ -155,7 +155,7 @@
         </div>
       </div>
 
-      <!-- Preferences Card -->
+      <!-- Preferences Card (for future update) -->
       <!-- <div class="profile-card">
         <div class="card-header">
           <div class="header-left">
