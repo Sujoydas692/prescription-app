@@ -1,8 +1,8 @@
 <template>
-  <div class="flex h-screen overflow-hidden bg-[#F4F0EC]">
+  <div class="flex h-screen overflow-hidden bg-[#F4F0EC] dark:bg-[#0F172A]">
     <!-- Mobile Topbar -->
-    <div class="mobile-topbar">
-      <div class="mobile-logo">
+    <div class="mobile-topbar dark:bg-[#1E293B] dark:border-b-[#334155]">
+      <div class="mobile-logo dark:bg-[#334155]/50">
         <svg
           class="mobile-logo-svg"
           width="32"
@@ -66,31 +66,71 @@
 
       <div class="mobile-greeting">
         <span class="mobile-greeting-emoji">{{ greetingIcon }}</span>
-        <span class="mobile-greeting-text">{{ greeting }}</span>
-        <span class="top-date">{{ formattedDate }}</span>
+        <span class="mobile-greeting-text dark:text-[#F4A58A]">{{
+          greeting
+        }}</span>
+        <span
+          class="top-date dark:bg-[#EE8875]/20 dark:border-[#EE8875]/30 dark:text-[#F4A58A]"
+          >{{ formattedDate }}</span
+        >
       </div>
 
       <div class="mobile-top-actions">
-        <!-- <button @click="$router.push('/settings')" class="mobile-top-btn">
-          <IconSettings class="mobile-top-icon" />
-        </button> -->
+        <button
+          @click="toggleDarkMode"
+          class="mobile-top-btn dark:text-[#94A3B8]"
+        >
+          <svg
+            v-if="isDarkMode"
+            class="mobile-top-icon"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+            />
+          </svg>
+          <svg
+            v-else
+            class="mobile-top-icon"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+            />
+          </svg>
+        </button>
 
-        <button @click="$router.push('/profile')" class="mobile-profile-btn">
-          <span class="mobile-profile-badge">
+        <button
+          @click="$router.push('/profile')"
+          class="mobile-profile-btn dark:bg-[#334155]/50"
+        >
+          <span
+            class="mobile-profile-badge dark:bg-gradient-to-br dark:from-[#EE8875] dark:to-[#2E6B8B]"
+          >
             {{ authStore.doctorName?.charAt(0)?.toUpperCase() || "D" }}
           </span>
         </button>
       </div>
     </div>
 
-    <div v-if="mobileMenuOpen" class="mobile-menu">
+    <div v-if="mobileMenuOpen" class="mobile-menu dark:bg-[#1E293B]">
       <div class="mobile-menu-items">
         <button
           v-for="item in navItems"
           :key="item.to"
           @click="handleMobileNav(item.to)"
-          class="mobile-menu-item"
-          :class="{ 'mobile-active': isActive(item.to) }"
+          class="mobile-menu-item dark:text-[#CBD5E1] dark:hover:bg-[#334155]"
+          :class="{ 'mobile-active dark:text-[#F4A58A]': isActive(item.to) }"
         >
           <component :is="item.icon" class="mobile-menu-icon" />
           <span>{{ item.label }}</span>
@@ -98,20 +138,48 @@
       </div>
 
       <div class="mobile-menu-footer">
-        <button @click="handleMobileNav('/settings')" class="mobile-menu-item">
+        <button
+          @click="handleMobileNav('/settings')"
+          class="mobile-menu-item dark:text-[#CBD5E1] dark:hover:bg-[#334155]"
+        >
           <IconSettings class="mobile-menu-icon" />
           <span>Settings</span>
         </button>
 
-        <div class="mobile-profile" @click="handleMobileNav('/profile')">
-          <div class="mobile-avatar">
+        <button
+          @click="toggleDarkMode"
+          class="mobile-menu-item dark:text-[#CBD5E1] dark:hover:bg-[#334155]"
+        >
+          <svg
+            class="mobile-menu-icon"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+            />
+          </svg>
+          <span>{{ isDarkMode ? "Light Mode" : "Dark Mode" }}</span>
+        </button>
+
+        <div
+          class="mobile-profile dark:border-t-[#334155]"
+          @click="handleMobileNav('/profile')"
+        >
+          <div
+            class="mobile-avatar dark:bg-gradient-to-br dark:from-[#EE8875] dark:to-[#2E6B8B]"
+          >
             {{ authStore.doctorName?.charAt(0)?.toUpperCase() || "D" }}
           </div>
           <div class="mobile-profile-info">
-            <div class="mobile-profile-name">
+            <div class="mobile-profile-name dark:text-white">
               Dr. {{ authStore.doctorName || "Doctor" }}
             </div>
-            <div class="mobile-profile-role">
+            <div class="mobile-profile-role dark:text-[#94A3B8]">
               {{ authStore.doctorDesignation || "MBBS, FCPS" }}
             </div>
           </div>
@@ -119,11 +187,13 @@
       </div>
     </div>
     <!-- LEFT PANEL (ICON RAIL + SIDEBAR together) -->
-    <div class="left-panel desktop-only">
+    <div
+      class="left-panel desktop-only dark:bg-gradient-to-br dark:from-[#1E293B] dark:via-[#0F172A] dark:to-[#0F172A]"
+    >
       <!-- ICON RAIL -->
       <aside class="icon-rail">
         <div class="logo-wrapper mb-8">
-          <div class="logo-glow">
+          <div class="logo-glow dark:bg-[#334155]/50">
             <svg
               class="logo-svg"
               width="28"
@@ -194,17 +264,21 @@
             class="icon-btn group relative"
             :class="{ 'is-active': isActive(item.to) }"
           >
-            <div class="icon-bg"></div>
+            <div class="icon-bg dark:bg-[#334155]/30"></div>
 
             <div class="icon-wrapper">
               <component
                 :is="item.icon"
-                class="icon-svg"
-                :class="{ 'active-icon': isActive(item.to) }"
+                class="icon-svg dark:text-[#94A3B8] dark:group-hover:text-white"
+                :class="{
+                  'active-icon dark:text-[#F4A58A]': isActive(item.to),
+                }"
               />
             </div>
 
-            <span class="tooltip">
+            <span
+              class="tooltip dark:bg-[#1E293B] dark:border-[#334155] dark:text-white"
+            >
               {{
                 (item.tooltip || item.to.replace("/", ""))
                   .charAt(0)
@@ -218,31 +292,63 @@
         <div
           class="bottom-section flex flex-col items-center gap-3 w-full px-3"
         >
-          <!-- <button
-            @click="$router.push('/settings')"
-            class="icon-btn group relative"
-            :class="{ 'is-active': isActive('/settings') }"
-          >
-            <div class="icon-bg"></div>
+          <button @click="toggleDarkMode" class="icon-btn group relative">
+            <div class="icon-bg dark:bg-[#334155]/30"></div>
             <div class="icon-wrapper">
-              <IconSettings class="icon-svg" />
+              <svg
+                v-if="isDarkMode"
+                class="icon-svg dark:text-[#94A3B8] dark:group-hover:text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <svg
+                v-else
+                class="icon-svg dark:text-[#94A3B8] dark:group-hover:text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
             </div>
-            <span class="tooltip">Settings</span>
-          </button> -->
+            <span
+              class="tooltip dark:bg-[#1E293B] dark:border-[#334155] dark:text-white"
+            >
+              {{ isDarkMode ? "Light Mode" : "Dark Mode" }}
+            </span>
+          </button>
 
           <div
             class="profile-avatar group relative"
             @click="$router.push('/profile')"
           >
-            <div class="avatar-glow"></div>
+            <div class="avatar-glow dark:bg-[#334155]/30"></div>
 
-            <div class="avatar-content">
+            <div
+              class="avatar-content dark:bg-gradient-to-br dark:from-[#EE8875] dark:to-[#2E6B8B]"
+            >
               <span class="avatar-text">
                 {{ authStore.doctorName?.charAt(0)?.toUpperCase() || "D" }}
               </span>
             </div>
 
-            <span class="tooltip">Profile</span>
+            <span
+              class="tooltip dark:bg-[#1E293B] dark:border-[#334155] dark:text-white"
+              >Profile</span
+            >
           </div>
         </div>
       </aside>
@@ -250,22 +356,14 @@
       <!-- SIDEBAR LIST -->
       <div class="sidebar-content">
         <div class="px-1 pt-7 pb-4">
-          <p class="sidebar-group">
+          <p class="sidebar-group dark:text-[#94A3B8]">
             {{ pageConfig.group }}
           </p>
 
           <div class="flex justify-between items-center">
-            <h2 class="sidebar-title">
+            <h2 class="sidebar-title dark:text-white">
               {{ pageConfig.title }}
             </h2>
-
-            <!-- <RouterLink
-              v-if="pageConfig.addRoute"
-              :to="pageConfig.addRoute"
-              class="add-circle"
-            >
-              <span class="plus">+</span>
-            </RouterLink> -->
           </div>
         </div>
 
@@ -274,10 +372,10 @@
           <input
             v-model="sidebarSearch"
             :placeholder="searchPlaceholder"
-            class="sidebar-search"
+            class="sidebar-search dark:bg-[#334155]/50 dark:text-white dark:placeholder:text-[#94A3B8] dark:border-[#334155] dark:focus:border-[#EE8875]"
           />
           <svg
-            class="search-icon"
+            class="search-icon dark:text-[#94A3B8]"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -295,11 +393,11 @@
         <div class="sidebar-dynamic-content">
           <!-- Patients List -->
           <div v-if="route.path.includes('/patients')" class="dynamic-list">
-            <div class="list-header mt-3">Patients Lists</div>
+            <div class="list-header dark:text-[#94A3B8]">Patients Lists</div>
             <div
               v-for="patient in filteredPatients"
               :key="patient.patientId"
-              class="list-item"
+              class="list-item dark:bg-[#334155]/30 dark:border-[#475569] dark:hover:bg-[#334155]/50"
               @click="$router.push(`/patients/${patient.patientId}`)"
             >
               <div
@@ -309,19 +407,27 @@
                 {{ patient.fullName?.charAt(0)?.toUpperCase() || "?" }}
               </div>
               <div class="item-info">
-                <div class="item-name">{{ patient.fullName }}</div>
-                <div class="item-details">
+                <div class="item-name dark:text-white">
+                  {{ patient.fullName }}
+                </div>
+                <div class="item-details dark:text-[#94A3B8]">
                   <span>{{ patient.age || "—" }} yrs</span>
-                  <span class="dot">•</span>
+                  <span class="dot dark:text-[#475569]">•</span>
                   <span>{{ patient.gender || "—" }}</span>
                 </div>
-                <div class="item-diagnosis" v-if="patient.diagnosis">
+                <div
+                  class="item-diagnosis dark:text-[#F4A58A]"
+                  v-if="patient.diagnosis"
+                >
                   {{ patient.diagnosis }}
                 </div>
               </div>
             </div>
 
-            <div v-if="filteredPatients.length === 0" class="empty-state">
+            <div
+              v-if="filteredPatients.length === 0"
+              class="empty-state dark:text-[#64748B]"
+            >
               <p>No patients found</p>
             </div>
           </div>
@@ -331,28 +437,37 @@
             v-else-if="route.path.includes('/prescriptions')"
             class="dynamic-list"
           >
-            <div class="list-header mt-3">Patient's Prescriptions</div>
+            <div class="list-header dark:text-[#94A3B8]">
+              Patient's Prescriptions
+            </div>
             <div
               v-for="prescription in filteredPrescriptions"
               :key="prescription.id"
-              class="list-item"
+              class="list-item dark:bg-[#334155]/30 dark:border-[#475569] dark:hover:bg-[#334155]/50"
               @click="$router.push(`/prescriptions/${prescription.id}`)"
             >
-              <div class="item-icon">💊</div>
+              <div class="item-icon dark:bg-[#475569]/50">💊</div>
               <div class="item-info">
-                <div class="item-name">{{ prescription.patientName }}</div>
-                <div class="item-details">
+                <div class="item-name dark:text-white">
+                  {{ prescription.patientName }}
+                </div>
+                <div class="item-details dark:text-[#94A3B8]">
                   <span>{{ formatDate(prescription.date) }}</span>
-                  <span class="dot">•</span>
+                  <span class="dot dark:text-[#475569]">•</span>
                   <span
                     >{{ prescription.medicines?.length || 0 }} medicines</span
                   >
                 </div>
-                <div class="item-diagnosis">{{ prescription.diagnosis }}</div>
+                <div class="item-diagnosis dark:text-[#F4A58A]">
+                  {{ prescription.diagnosis }}
+                </div>
               </div>
             </div>
 
-            <div v-if="filteredPrescriptions.length === 0" class="empty-state">
+            <div
+              v-if="filteredPrescriptions.length === 0"
+              class="empty-state dark:text-[#64748B]"
+            >
               <p>No prescriptions found</p>
             </div>
           </div>
@@ -362,26 +477,31 @@
             v-else-if="route.path.includes('/medicines')"
             class="dynamic-list"
           >
-            <div class="list-header mt-3">Medicines Lists</div>
+            <div class="list-header dark:text-[#94A3B8]">Medicines Lists</div>
             <div
               v-for="medicine in filteredMedicines"
               :key="medicine.id"
-              class="list-item"
+              class="list-item dark:bg-[#334155]/30 dark:border-[#475569] dark:hover:bg-[#334155]/50"
               @click="$router.push(`/medicines/${medicine.id}`)"
             >
-              <div class="item-icon">💊</div>
+              <div class="item-icon dark:bg-[#475569]/50">💊</div>
               <div class="item-info">
-                <div class="item-name">{{ medicine.name }}</div>
-                <div class="item-details">
+                <div class="item-name dark:text-white">{{ medicine.name }}</div>
+                <div class="item-details dark:text-[#94A3B8]">
                   <span>{{ medicine.brand }}</span>
-                  <span class="dot">•</span>
+                  <span class="dot dark:text-[#475569]">•</span>
                   <span>{{ medicine.strength }}</span>
                 </div>
-                <div class="item-price">৳{{ medicine.price }}</div>
+                <div class="item-price dark:text-[#F4A58A]">
+                  ৳{{ medicine.price }}
+                </div>
               </div>
             </div>
 
-            <div v-if="filteredMedicines.length === 0" class="empty-state">
+            <div
+              v-if="filteredMedicines.length === 0"
+              class="empty-state dark:text-[#64748B]"
+            >
               <p>No medicines found</p>
             </div>
           </div>
@@ -391,52 +511,66 @@
             v-else-if="route.path.includes('/chambers')"
             class="dynamic-list"
           >
-            <div class="list-header mt-3">Chambers Lists</div>
+            <div class="list-header dark:text-[#94A3B8]">Chambers Lists</div>
             <div
               v-for="chamber in filteredChambers"
               :key="chamber.id"
-              class="list-item"
+              class="list-item dark:bg-[#334155]/30 dark:border-[#475569] dark:hover:bg-[#334155]/50"
               @click="$router.push(`/chambers/${chamber.id}`)"
             >
-              <div class="item-icon">🏥</div>
+              <div class="item-icon dark:bg-[#475569]/50">🏥</div>
               <div class="item-info">
-                <div class="item-name">{{ chamber.name }}</div>
-                <div class="item-details">
+                <div class="item-name dark:text-white">{{ chamber.name }}</div>
+                <div class="item-details dark:text-[#94A3B8]">
                   <span>{{ chamber.location }}</span>
                 </div>
-                <div class="item-time">{{ chamber.time }}</div>
+                <div class="item-time dark:text-[#F4A58A]">
+                  {{ chamber.time }}
+                </div>
               </div>
             </div>
 
-            <div v-if="filteredChambers.length === 0" class="empty-state">
+            <div
+              v-if="filteredChambers.length === 0"
+              class="empty-state dark:text-[#64748B]"
+            >
               <p>No chambers found</p>
             </div>
           </div>
 
           <!-- Dashboard - Recent Items -->
           <div v-else-if="route.path === '/dashboard'" class="dynamic-list">
-            <div class="list-header mt-3">Recent Prescriptions</div>
+            <div class="list-header dark:text-[#94A3B8]">
+              Recent Prescriptions
+            </div>
             <div
               v-for="prescription in recentPrescriptions"
               :key="prescription.id"
-              class="list-item"
+              class="list-item dark:bg-[#334155]/30 dark:border-[#475569] dark:hover:bg-[#334155]/50"
               @click="$router.push(`/prescriptions/${prescription.id}`)"
             >
-              <div class="item-icon">💊</div>
+              <div class="item-icon dark:bg-[#475569]/50">💊</div>
               <div class="item-info">
-                <div class="item-name">{{ prescription.patientName }}</div>
-                <div class="item-details">
+                <div class="item-name dark:text-white">
+                  {{ prescription.patientName }}
+                </div>
+                <div class="item-details dark:text-[#94A3B8]">
                   <span>{{ formatDate(prescription.date) }}</span>
-                  <span class="dot">•</span>
+                  <span class="dot dark:text-[#475569]">•</span>
                   <span
                     >{{ prescription.medicines?.length || 0 }} medicines</span
                   >
                 </div>
-                <div class="item-diagnosis">{{ prescription.diagnosis }}</div>
+                <div class="item-diagnosis dark:text-[#F4A58A]">
+                  {{ prescription.diagnosis }}
+                </div>
               </div>
             </div>
 
-            <div v-if="recentPrescriptions.length === 0" class="empty-state">
+            <div
+              v-if="recentPrescriptions.length === 0"
+              class="empty-state dark:text-[#64748B]"
+            >
               <p>No recent prescriptions found</p>
             </div>
           </div>
@@ -447,7 +581,7 @@
               v-for="link in pageConfig.subLinks"
               :key="link.to"
               :to="link.to"
-              class="sidebar-link"
+              class="sidebar-link dark:text-[#94A3B8] dark:hover:text-white dark:hover:bg-[#334155]/30"
               :class="{ active: route.path === link.to }"
             >
               <component :is="link.icon" class="w-4" />
@@ -459,21 +593,31 @@
     </div>
 
     <!-- MAIN PANEL -->
-    <div class="main" :class="{ 'mobile-main': mobileMenuOpen }">
+    <div
+      class="main dark:bg-[#0F172A]"
+      :class="{ 'mobile-main': mobileMenuOpen }"
+    >
       <!-- TOP BAR -->
-      <header class="topbar desktop-only">
-        <h1 class="top-title">
+      <header class="topbar desktop-only dark:border-b-[#334155]">
+        <h1 class="top-title dark:text-white">
           {{ pageConfig.topbar }}
         </h1>
 
         <div class="flex items-center gap-4">
-          <div class="greeting-pill">
+          <div
+            class="greeting-pill dark:bg-gradient-to-r dark:from-[#1E293B] dark:to-[#2D1B1B]"
+          >
             <div class="greeting-row">
               <span class="greeting-emoji">{{ greetingIcon }}</span>
-              <span class="greeting-text">{{ greeting }}</span>
+              <span class="greeting-text dark:text-[#F4A58A]">{{
+                greeting
+              }}</span>
             </div>
             <div class="date-row">
-              <span class="top-date">{{ formattedDate }}</span>
+              <span
+                class="top-date dark:bg-[#EE8875]/20 dark:border-[#EE8875]/30 dark:text-[#F4A58A]"
+                >{{ formattedDate }}</span
+              >
             </div>
           </div>
         </div>
@@ -484,13 +628,13 @@
         <RouterView />
       </main>
 
-      <div class="mobile-tabbar mobile-only">
+      <div class="mobile-tabbar dark:bg-[#1E293B] dark:border-t-[#334155]">
         <button
           v-for="item in navItems"
           :key="item.to"
           @click="$router.push(item.to)"
-          class="tabbar-item"
-          :class="{ 'tabbar-active': isActive(item.to) }"
+          class="tabbar-item dark:text-[#94A3B8]"
+          :class="{ 'tabbar-active dark:text-[#F4A58A]': isActive(item.to) }"
         >
           <component :is="item.icon" class="tabbar-icon" />
           <span class="tabbar-label">{{ item.label }}</span>
@@ -501,7 +645,7 @@
 </template>
 
 <script setup>
-import { ref, computed, h, onMounted, onUnmounted } from "vue";
+import { ref, computed, h, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import dayjs from "dayjs";
 
@@ -521,8 +665,35 @@ const medicineStore = useMedicinesStore();
 const chamberStore = useChambersStore();
 
 const sidebarSearch = ref("");
-
 const mobileMenuOpen = ref(false);
+const isDarkMode = ref(false);
+
+// Check localStorage for dark mode preference
+const checkDarkMode = () => {
+  const savedMode = localStorage.getItem("darkMode");
+  if (savedMode) {
+    isDarkMode.value = savedMode === "true";
+  } else {
+    isDarkMode.value = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+  }
+  applyDarkMode();
+};
+
+const applyDarkMode = () => {
+  if (isDarkMode.value) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+  localStorage.setItem("darkMode", isDarkMode.value);
+};
+
+const toggleDarkMode = () => {
+  isDarkMode.value = !isDarkMode.value;
+  applyDarkMode();
+};
 
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value;
@@ -687,6 +858,7 @@ const updateTime = () => {
 };
 
 onMounted(() => {
+  checkDarkMode();
   if (timer) clearInterval(timer);
 
   timer = setInterval(() => {
@@ -824,6 +996,15 @@ function handleLogout() {
 </script>
 
 <style scoped>
+/* Transition for smooth dark mode */
+* {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
 /* Modern Rail Design */
 .left-panel {
   display: flex;
@@ -1224,7 +1405,7 @@ function handleLogout() {
   inset: 0;
   border-radius: 12px;
   background: transparent;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   z-index: 0;
 }
 
@@ -1610,6 +1791,99 @@ function handleLogout() {
     font-size: 16px;
   }
 
+  /* Mobile Menu */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: white;
+    z-index: 2000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-menu.open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-items {
+    flex: 1;
+    padding: 20px;
+  }
+
+  .mobile-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-menu-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mobile-active {
+    color: #f4a58a;
+  }
+
+  .mobile-menu-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(30, 42, 74, 0.08);
+  }
+
+  .mobile-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(247, 179, 134, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+
+  .mobile-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2e8b8b, #ee8875);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .mobile-profile-info {
+    flex: 1;
+  }
+
+  .mobile-profile-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #1e2a4a;
+  }
+
+  .mobile-profile-role {
+    font-size: 11px;
+    color: rgba(30, 42, 74, 0.6);
+  }
+
   /* Mobile Tabbar */
   .mobile-tabbar {
     position: fixed;
@@ -1705,6 +1979,173 @@ function handleLogout() {
   .mobile-topbar,
   .mobile-tabbar {
     display: none;
+  }
+}
+
+/* Force dark mode styles to override */
+.dark .left-panel {
+  background: linear-gradient(
+    90deg,
+    rgba(251, 202, 178, 0.9) 0%,
+    rgb(244 165 138 / 78%) 50%,
+    rgb(236 138 114 / 58%) 100%
+  ) !important;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .main {
+  background: #0f172a !important;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .topbar {
+  border-bottom-color: #334155 !important;
+}
+
+.dark .top-title {
+  color: #f1f5f9 !important;
+}
+
+/* .dark .sidebar-search {
+  background: #334155 !important;
+  color: #f1f5f9 !important;
+  border-color: #475569 !important;
+}
+
+.dark .sidebar-search::placeholder {
+  color: #94a3b8 !important;
+}
+
+.dark .sidebar-group {
+  color: #94a3b8 !important;
+}
+
+.dark .sidebar-title {
+  color: #f1f5f9 !important;
+} */
+
+.dark .list-item {
+  background: #334155 !important;
+  border-color: #475569 !important;
+}
+
+.dark .list-item:hover {
+  background: #3b4a5c !important;
+}
+
+.dark .item-name {
+  color: #f1f5f9 !important;
+}
+
+.dark .item-details {
+  color: #94a3b8 !important;
+}
+
+.dark .icon-rail::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(26, 36, 48, 0.3) 20%,
+    rgba(26, 36, 48, 0.5) 50%,
+    rgba(26, 36, 48, 0.3) 80%,
+    transparent 100%
+  );
+}
+
+.dark .greeting-pill {
+  background: linear-gradient(
+    90deg,
+    rgb(15 23 42),
+    rgba(255, 186, 130, 0.295)
+  ) !important;
+  color: #f4a58a !important;
+}
+
+.dark .top-date {
+  background: rgba(238, 136, 117, 0.2) !important;
+  border-color: rgba(238, 136, 117, 0.3) !important;
+  color: #f4a58a !important;
+}
+
+.dark .icon-btn:hover::before {
+  background: rgba(26, 36, 48, 0.185) !important;
+  border: 1px solid rgba(26, 36, 48, 0.3) !important;
+}
+
+.dark .icon-btn.is-active::before {
+  background: rgba(26, 36, 48, 0.185) !important;
+  border: 1px solid rgba(26, 36, 48, 0.137) !important;
+  box-shadow: 0 4px 12px rgba(46, 139, 139, 0.2) !important;
+}
+
+/* .dark .icon-svg {
+  color: #94a3b8 !important;
+}
+
+.dark .icon-btn:hover .icon-svg {
+  color: #f1f5f9 !important;
+}
+
+.dark .icon-btn.is-active .icon-svg {
+  color: #f4a58a !important;
+}
+
+.dark .tooltip {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+} */
+
+/* Mobile dark mode */
+@media (max-width: 768px) {
+  .dark .mobile-topbar {
+    background: #1e293b !important;
+    border-bottom-color: #334155 !important;
+  }
+
+  .dark .mobile-greeting-text {
+    color: #f4a58a !important;
+  }
+
+  .dark .mobile-tabbar {
+    background: #1e293b !important;
+    border-top-color: #334155 !important;
+  }
+
+  .dark .mobile-top-btn {
+    color: #94a3b8 !important;
+  }
+
+  .dark .tabbar-item {
+    color: #94a3b8 !important;
+  }
+
+  .dark .tabbar-active {
+    color: #f4a58a !important;
+  }
+
+  .dark .mobile-menu {
+    background: #1e293b !important;
+  }
+
+  .dark .mobile-menu-item {
+    color: #cbd5e1 !important;
+  }
+
+  .dark .mobile-menu-item:hover {
+    background: #334155 !important;
+  }
+
+  .dark .mobile-active {
+    color: #f4a58a !important;
+  }
+
+  .dark .mobile-profile {
+    background: #334155 !important;
+  }
+
+  .dark .mobile-profile-name {
+    color: #f1f5f9 !important;
   }
 }
 </style>

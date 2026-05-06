@@ -340,7 +340,7 @@ onMounted(async () => {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .back-btn:hover {
@@ -366,7 +366,7 @@ onMounted(async () => {
   font-weight: 700;
   font-family: "Nunito", sans-serif;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .edit-btn {
@@ -543,6 +543,7 @@ onMounted(async () => {
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
   margin-bottom: 8px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .not-found-text {
@@ -552,6 +553,7 @@ onMounted(async () => {
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .back-to-patients {
@@ -559,6 +561,7 @@ onMounted(async () => {
   font-weight: 700;
   color: #ee8875;
   text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Patient Card */
@@ -570,7 +573,7 @@ onMounted(async () => {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   margin-bottom: 24px;
   border: 1px solid rgba(30, 42, 74, 0.06);
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .patient-card:hover {
@@ -593,6 +596,7 @@ onMounted(async () => {
   padding: 30px;
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
+  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Profile Header */
@@ -640,6 +644,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   z-index: 1;
+  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .avatar-text {
@@ -659,6 +664,7 @@ onMounted(async () => {
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
   margin-bottom: 8px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .patient-meta {
@@ -676,6 +682,7 @@ onMounted(async () => {
   background: rgba(238, 136, 117, 0.05);
   padding: 6px 12px;
   border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Info Grid */
@@ -695,7 +702,7 @@ onMounted(async () => {
   border-radius: 20px;
   border: 1px solid rgba(30, 42, 74, 0.06);
   backdrop-filter: blur(4px);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-card:hover {
@@ -712,6 +719,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   font-size: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-content {
@@ -725,6 +733,7 @@ onMounted(async () => {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-value {
@@ -733,6 +742,7 @@ onMounted(async () => {
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
   margin-top: 2px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Additional Info */
@@ -742,6 +752,7 @@ onMounted(async () => {
   flex-wrap: wrap;
   padding-top: 16px;
   border-top: 1px solid rgba(30, 42, 74, 0.08);
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-chip {
@@ -752,12 +763,14 @@ onMounted(async () => {
   background: rgba(46, 139, 139, 0.05);
   border-radius: 30px;
   border: 1px solid rgba(46, 139, 139, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chip-label {
   font-size: 11px;
   font-weight: 600;
   color: #5e6a85;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chip-value {
@@ -765,6 +778,7 @@ onMounted(async () => {
   font-weight: 700;
   color: #2e8b8b;
   font-family: "Nunito", sans-serif;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Prescriptions Section */
@@ -774,6 +788,7 @@ onMounted(async () => {
   padding: 24px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(30, 42, 74, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .section-header {
@@ -797,6 +812,7 @@ onMounted(async () => {
   font-weight: 800;
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .section-badge {
@@ -806,6 +822,7 @@ onMounted(async () => {
   color: #c05030;
   font-size: 11px;
   font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view-all-link {
@@ -816,7 +833,7 @@ onMounted(async () => {
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view-all-link:hover {
@@ -866,6 +883,7 @@ onMounted(async () => {
 .prescriptions-loading p {
   font-size: 13px;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Empty Prescriptions */
@@ -883,6 +901,7 @@ onMounted(async () => {
   font-size: 13px;
   color: #9aa0b8;
   margin-bottom: 16px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .create-first-btn {
@@ -891,7 +910,7 @@ onMounted(async () => {
   font-weight: 700;
   color: #ee8875;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .create-first-btn:hover {
@@ -914,7 +933,7 @@ onMounted(async () => {
   border-radius: 20px;
   border: 1px solid rgba(30, 42, 74, 0.06);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(4px);
 }
 
@@ -940,6 +959,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   font-size: 22px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .prescription-info {
@@ -952,6 +972,7 @@ onMounted(async () => {
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
   margin-bottom: 4px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .prescription-meta {
@@ -961,6 +982,7 @@ onMounted(async () => {
   font-size: 11px;
   color: #9aa0b8;
   flex-wrap: wrap;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-right {
@@ -977,6 +999,158 @@ onMounted(async () => {
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========== DARK MODE STYLES ========== */
+.dark .back-btn {
+  background: #1e293b;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.dark .back-btn:hover {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #f4a58a;
+  color: #f4a58a;
+}
+
+.dark .edit-btn {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.dark .edit-btn:hover {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #f4a58a;
+  color: #f4a58a;
+}
+
+.dark .prescription-btn {
+  background: #f4a58a;
+  color: #0f172a;
+}
+
+.dark .loading-state,
+.dark .not-found-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .loading-text,
+.dark .not-found-text {
+  color: #94a3b8;
+}
+
+.dark .not-found-title {
+  color: #f1f5f9;
+}
+
+.dark .patient-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .card-content {
+  background: rgba(30, 42, 74, 0.9);
+}
+
+.dark .patient-name {
+  color: #f1f5f9;
+}
+
+.dark .meta-item {
+  background: rgba(244, 165, 138, 0.1);
+  color: #94a3b8;
+}
+
+.dark .info-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+.dark .info-card:hover {
+  background: #1e293b;
+}
+
+.dark .info-label {
+  color: #64748b;
+}
+
+.dark .info-value {
+  color: #f1f5f9;
+}
+
+.dark .additional-info {
+  border-top-color: #334155;
+}
+
+.dark .info-chip {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #334155;
+}
+
+.dark .chip-label {
+  color: #94a3b8;
+}
+
+.dark .chip-value {
+  color: #f4a58a;
+}
+
+.dark .prescriptions-section {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .section-title {
+  color: #f1f5f9;
+}
+
+.dark .section-badge {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+}
+
+.dark .view-all-link {
+  color: #f4a58a;
+}
+
+.dark .prescription-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+.dark .prescription-card:hover {
+  background: #1e293b;
+  border-color: #f4a58a;
+}
+
+.dark .prescription-title {
+  color: #f1f5f9;
+}
+
+.dark .prescription-meta {
+  color: #64748b;
+}
+
+.dark .date-badge {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+}
+
+.dark .prescriptions-loading p,
+.dark .empty-prescriptions p {
+  color: #94a3b8;
+}
+
+.dark .create-first-btn {
+  color: #f4a58a;
+}
+
+.dark .back-to-patients {
+  color: #f4a58a;
 }
 
 /* Fade In Animation */

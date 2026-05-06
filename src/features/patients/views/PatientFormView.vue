@@ -96,10 +96,12 @@ import { reactive, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { toast } from "vue3-toastify";
 import { usePatientsStore } from "../stores/patientsStore";
+
 const route = useRoute();
 const router = useRouter();
 const store = usePatientsStore();
 const isEdit = computed(() => !!route.params.id);
+
 const form = reactive({
   fullName: "",
   mobileNumber: "",
@@ -108,6 +110,7 @@ const form = reactive({
   weight: "",
   address: "",
 });
+
 async function onSubmit() {
   if (!form.fullName.trim()) {
     toast.error("Enter patient name");
@@ -130,6 +133,7 @@ async function onSubmit() {
     toast.error(store.error || "Failed to save");
   }
 }
+
 onMounted(async () => {
   if (isEdit.value) {
     const p = await store.fetchById(route.params.id);
@@ -153,6 +157,7 @@ onMounted(async () => {
   padding: 24px;
   border: 1px solid rgba(30, 42, 74, 0.06);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .f-card-head {
@@ -170,6 +175,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .f-icon {
@@ -181,6 +187,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Grid Layout for form fields */
@@ -207,6 +214,7 @@ onMounted(async () => {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .f-control {
@@ -219,7 +227,7 @@ onMounted(async () => {
   font-size: 13px;
   outline: none;
   width: 100%;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
 }
 
@@ -236,6 +244,7 @@ onMounted(async () => {
   gap: 12px;
   padding-top: 20px;
   border-top: 1px solid rgba(30, 42, 74, 0.08);
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .f-btn-ghost {
@@ -248,7 +257,7 @@ onMounted(async () => {
   font-weight: 700;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .f-btn-ghost:hover {
@@ -268,7 +277,7 @@ onMounted(async () => {
   font-size: 12px;
   color: #1e2a4a;
   background: #f4a58a;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   cursor: pointer;
 }
@@ -299,6 +308,69 @@ onMounted(async () => {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* ========== DARK MODE STYLES ========== */
+.dark .f-card {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.dark .f-card-title {
+  color: #f1f5f9;
+}
+
+.dark .f-icon {
+  background: rgba(244, 165, 138, 0.15);
+}
+
+.dark .f-label {
+  color: #94a3b8;
+}
+
+.dark .f-control {
+  background: #0f172a;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.dark .f-control::placeholder {
+  color: #64748b;
+}
+
+.dark .f-control:focus {
+  border-color: #f4a58a;
+  box-shadow: 0 0 0 3px rgba(244, 165, 138, 0.15);
+}
+
+.dark .f-control option {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+
+.dark .f-btn-ghost {
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.dark .f-btn-ghost:hover {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #f4a58a;
+  color: #f4a58a;
+}
+
+.dark .f-btn-primary {
+  background: #f4a58a;
+  color: #0f172a;
+}
+
+.dark .f-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(244, 165, 138, 0.4);
+}
+
+.dark .button-section {
+  border-top-color: #334155;
 }
 
 /* Responsive */
