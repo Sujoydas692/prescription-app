@@ -508,6 +508,7 @@ onMounted(async () => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ========== Header Styles ========== */
@@ -534,6 +535,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-title {
@@ -542,11 +544,13 @@ onMounted(async () => {
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
   margin-bottom: 4px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-subtitle {
   font-size: 13px;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ========== Tabs Styles ========== */
@@ -556,6 +560,7 @@ onMounted(async () => {
   margin-bottom: 32px;
   border-bottom: 1px solid rgba(30, 42, 74, 0.1);
   padding-bottom: 0;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab-button {
@@ -569,7 +574,7 @@ onMounted(async () => {
   font-weight: 600;
   color: #9aa0b8;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
@@ -627,7 +632,7 @@ onMounted(async () => {
   font-family: "DM Sans", sans-serif;
   color: #1e2a4a;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-input:hover {
@@ -688,7 +693,7 @@ onMounted(async () => {
   color: #1e2a4a;
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 }
 
@@ -732,6 +737,7 @@ onMounted(async () => {
   overflow: hidden;
   border: 1px solid rgba(30, 42, 74, 0.08);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .form-header {
@@ -745,6 +751,7 @@ onMounted(async () => {
     rgba(46, 107, 139, 0.05)
   );
   border-bottom: 1px solid rgba(30, 42, 74, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .form-icon {
@@ -756,6 +763,7 @@ onMounted(async () => {
   font-weight: 800;
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .form-body {
@@ -777,6 +785,7 @@ onMounted(async () => {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .input-wrapper {
@@ -803,7 +812,7 @@ onMounted(async () => {
   font-family: "DM Sans", sans-serif;
   font-size: 13px;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .form-input:focus,
@@ -819,6 +828,7 @@ onMounted(async () => {
   padding: 16px 24px;
   border-top: 1px solid rgba(30, 42, 74, 0.06);
   background: #fafcff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-cancel {
@@ -833,7 +843,7 @@ onMounted(async () => {
   border: 1.5px solid rgba(30, 42, 74, 0.15);
   color: #5a6282;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-cancel:hover {
@@ -854,7 +864,7 @@ onMounted(async () => {
   color: #1e2a4a;
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-save:hover:not(:disabled) {
@@ -963,6 +973,7 @@ onMounted(async () => {
   font-size: 13px;
   color: #9aa0b8;
   animation: pulse 1.5s ease-in-out infinite;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes pulse {
@@ -1022,12 +1033,14 @@ onMounted(async () => {
   font-weight: 800;
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .empty-desc {
   font-size: 13px;
   color: #9aa0b8;
   margin-bottom: 10px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .empty-btn {
@@ -1035,6 +1048,7 @@ onMounted(async () => {
   font-weight: 700;
   color: #ee8875;
   text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ========== Brands Grid ========== */
@@ -1049,7 +1063,7 @@ onMounted(async () => {
   background: white;
   border-radius: 24px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(30, 42, 74, 0.06);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
@@ -1092,6 +1106,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .price-badge {
@@ -1101,6 +1116,7 @@ onMounted(async () => {
   color: #2e6b8b;
   font-size: 14px;
   font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .brand-name {
@@ -1109,6 +1125,7 @@ onMounted(async () => {
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
   margin-bottom: 12px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .brand-details {
@@ -1117,6 +1134,7 @@ onMounted(async () => {
   gap: 10px;
   padding-top: 12px;
   border-top: 1px solid rgba(30, 42, 74, 0.06);
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .detail-item {
@@ -1139,6 +1157,7 @@ onMounted(async () => {
 
 .detail-text {
   color: #5e6a85;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .detail-badge {
@@ -1148,6 +1167,7 @@ onMounted(async () => {
   color: #2e6b8b;
   font-size: 11px;
   font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ========== Generics Grid ========== */
@@ -1162,7 +1182,7 @@ onMounted(async () => {
   background: white;
   border-radius: 24px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(30, 42, 74, 0.06);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
@@ -1185,6 +1205,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pregnancy-badge {
@@ -1194,6 +1215,7 @@ onMounted(async () => {
   color: #e0943a;
   font-size: 12px;
   font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .generic-name {
@@ -1202,6 +1224,7 @@ onMounted(async () => {
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
   margin-bottom: 12px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .generic-details {
@@ -1210,6 +1233,205 @@ onMounted(async () => {
   gap: 10px;
   padding-top: 12px;
   border-top: 1px solid rgba(30, 42, 74, 0.06);
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========== DARK MODE STYLES ========== */
+.dark .medicines-container {
+  background: transparent;
+}
+
+.dark .header-title {
+  color: #f1f5f9;
+}
+
+.dark .header-subtitle {
+  color: #94a3b8;
+}
+
+.dark .header-icon {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 165, 138, 0.2),
+    rgba(46, 107, 139, 0.15)
+  );
+}
+
+.dark .tabs-container {
+  border-bottom-color: #334155;
+}
+
+.dark .tab-button {
+  color: #94a3b8;
+}
+
+.dark .tab-button:hover,
+.dark .tab-active {
+  color: #f4a58a;
+}
+
+.dark .tab-active::after {
+  background: #f4a58a;
+}
+
+.dark .search-input {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.dark .search-input:hover {
+  background: #1e293b;
+  border-color: rgba(244, 165, 138, 0.3);
+}
+
+.dark .search-input:focus {
+  border-color: #f4a58a;
+  background: #1e293b;
+}
+
+.dark .search-input::placeholder {
+  color: #64748b;
+}
+
+.dark .search-icon {
+  color: #64748b;
+}
+
+.dark .search-input:focus + .search-icon {
+  color: #f4a58a;
+}
+
+.dark .add-btn {
+  background: #f4a58a;
+  color: #0f172a;
+}
+
+.dark .add-btn.cancel-mode {
+  background: #1e293b;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.dark .add-btn.cancel-mode:hover {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #f4a58a;
+  color: #f4a58a;
+}
+
+.dark .add-form-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .form-header {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 165, 138, 0.1),
+    rgba(46, 107, 139, 0.08)
+  );
+  border-bottom-color: #334155;
+}
+
+.dark .form-title {
+  color: #f1f5f9;
+}
+
+.dark .form-label {
+  color: #94a3b8;
+}
+
+.dark .form-input,
+.dark .form-select {
+  background: #0f172a;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.dark .form-input:focus,
+.dark .form-select:focus {
+  border-color: #f4a58a;
+  box-shadow: 0 0 0 3px rgba(244, 165, 138, 0.15);
+}
+
+.dark .form-actions {
+  background: #0f172a;
+  border-top-color: #334155;
+}
+
+.dark .btn-cancel {
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.dark .btn-cancel:hover {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #f4a58a;
+  color: #f4a58a;
+}
+
+.dark .btn-save {
+  background: #f4a58a;
+  color: #0f172a;
+}
+
+.dark .loading-state,
+.dark .empty-state {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .loading-text,
+.dark .empty-desc {
+  color: #94a3b8;
+}
+
+.dark .empty-title {
+  color: #f1f5f9;
+}
+
+.dark .empty-btn {
+  color: #f4a58a;
+}
+
+.dark .brand-card,
+.dark .generic-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .brand-icon,
+.dark .generic-icon {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 165, 138, 0.15),
+    rgba(46, 107, 139, 0.1)
+  );
+}
+
+.dark .price-badge,
+.dark .detail-badge {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+}
+
+.dark .brand-name,
+.dark .generic-name {
+  color: #f1f5f9;
+}
+
+.dark .brand-details,
+.dark .generic-details {
+  border-top-color: #334155;
+}
+
+.dark .detail-text {
+  color: #94a3b8;
+}
+
+.dark .pregnancy-badge {
+  background: rgba(224, 148, 58, 0.15);
+  color: #fbbf24;
 }
 
 /* ========== Responsive ========== */

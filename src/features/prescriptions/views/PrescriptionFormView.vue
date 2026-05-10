@@ -392,7 +392,7 @@
                 <span
                   v-for="(t, i) in form.tests"
                   :key="i"
-                  class="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold"
+                  class="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold dark-color"
                   style="background: rgba(46, 107, 139, 0.1); color: #2e6b8b"
                 >
                   {{ t.testName }}
@@ -1159,6 +1159,7 @@ onMounted(async () => {
   top: 0;
   z-index: 10;
   margin-bottom: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .preview-title {
@@ -1169,6 +1170,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .print-btn {
@@ -1198,6 +1200,7 @@ onMounted(async () => {
   padding: 20px;
   border: 1px solid rgba(30, 42, 74, 0.07);
   box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .medicines-header {
@@ -1211,6 +1214,7 @@ onMounted(async () => {
   z-index: 15;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(30, 42, 74, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .medicine-actions {
@@ -1436,6 +1440,7 @@ onMounted(async () => {
   animation: modalSlide 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
   position: relative;
   z-index: 20;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes modalSlide {
@@ -1524,6 +1529,7 @@ onMounted(async () => {
   font-family: "DM Sans", sans-serif;
   outline: none;
   width: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal-input:focus,
@@ -1594,6 +1600,7 @@ onMounted(async () => {
   border: 1.5px solid rgba(30, 42, 74, 0.15);
   color: #5a6282;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal-cancel-btn:hover {
@@ -1611,6 +1618,7 @@ onMounted(async () => {
   color: #1e2a4a;
   border: none;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal-save-btn:hover {
@@ -1628,6 +1636,7 @@ onMounted(async () => {
   font-family: "Nunito", sans-serif;
   font-size: 12px;
   color: #111;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Doctor header */
@@ -1639,17 +1648,20 @@ onMounted(async () => {
   border-bottom: 2px solid #111;
   flex-wrap: wrap;
   gap: 10px;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-doc-name {
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 3px;
   color: #000;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-doc-line {
   font-size: 10.5px;
   line-height: 1.65;
   color: #222;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-date-block {
   text-align: right;
@@ -1672,6 +1684,7 @@ onMounted(async () => {
   border-bottom: 1px solid #ccc;
   padding: 7px 22px;
   font-size: 11.5px;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-pfield {
   white-space: nowrap;
@@ -1688,6 +1701,7 @@ onMounted(async () => {
   padding: 6px 22px;
   font-size: 11px;
   border-bottom: 1px dashed #ccc;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-vital-pill strong {
   font-weight: 700;
@@ -1713,10 +1727,12 @@ onMounted(async () => {
   font-weight: 700;
   margin-bottom: 5px;
   color: #000;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-left-divider {
   border-bottom: 1px solid #ddd;
   margin: 10px 0;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-complaint-list {
   list-style: disc;
@@ -1724,11 +1740,13 @@ onMounted(async () => {
   font-size: 11.5px;
   line-height: 2.1;
   color: #222;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-complaint-para {
   font-size: 11.5px;
   line-height: 1.6;
   color: #222;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Right column */
@@ -1743,6 +1761,7 @@ onMounted(async () => {
   color: #111;
   margin-bottom: 12px;
   line-height: 1;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-symbol sub {
   font-size: 18px;
@@ -1752,6 +1771,7 @@ onMounted(async () => {
 .rx-no-meds {
   font-size: 12px;
   color: #999;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .rx-medicines-list {
@@ -1762,6 +1782,7 @@ onMounted(async () => {
   padding-bottom: 10px;
   margin-bottom: 2px;
   border-bottom: 1px dashed #ddd;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-medicine-item:last-child {
   border-bottom: none;
@@ -1770,6 +1791,7 @@ onMounted(async () => {
   font-size: 12.5px;
   margin-bottom: 3px;
   color: #000;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-med-name strong {
   font-weight: 700;
@@ -1777,10 +1799,12 @@ onMounted(async () => {
 .rx-med-num {
   color: #555;
   margin-right: 1px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-med-strength {
   font-size: 11px;
   color: #333;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-med-instruction {
   display: flex;
@@ -1789,15 +1813,18 @@ onMounted(async () => {
   padding-left: 14px;
   font-size: 11px;
   color: #333;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-med-dosage {
   font-weight: 600;
 }
 .rx-med-note {
   color: #555;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-med-duration {
   color: #555;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .rx-followup {
@@ -1805,6 +1832,7 @@ onMounted(async () => {
   font-size: 12.5px;
   font-weight: 700;
   color: #000;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ══════════════════════════════════ */
@@ -1816,6 +1844,7 @@ onMounted(async () => {
   padding: 20px;
   border: 1px solid rgba(30, 42, 74, 0.07);
   box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .f-card-head {
   display: flex;
@@ -1831,6 +1860,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .f-icon {
   width: 28px;
@@ -1841,6 +1871,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .f-group {
   display: flex;
@@ -1853,6 +1884,7 @@ onMounted(async () => {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .f-control {
   padding: 8px 12px;
@@ -1864,7 +1896,7 @@ onMounted(async () => {
   font-size: 12px;
   outline: none;
   width: 100%;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .f-control:focus {
   border-color: #ee8875;
@@ -1891,7 +1923,7 @@ onMounted(async () => {
   font-weight: 700;
   font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .f-btn-ghost:hover {
@@ -1909,7 +1941,7 @@ onMounted(async () => {
   font-weight: 700;
   font-size: 11px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .f-btn-accent:hover {
   transform: translateY(-1px);
@@ -2007,6 +2039,247 @@ onMounted(async () => {
 .rx-td {
   padding: 8px 10px;
   vertical-align: middle;
+}
+
+/* ========== DARK MODE STYLES ========== */
+.dark .prescription-container {
+  background: transparent;
+}
+
+.dark .f-card,
+.dark .medicines-section {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .preview-header {
+  background: #0f172a;
+}
+
+.dark .f-card-title,
+.dark .preview-title {
+  color: #f1f5f9;
+}
+
+.dark .f-icon {
+  background: rgba(244, 165, 138, 0.15);
+}
+
+.dark .f-control,
+.dark .modal-input,
+.dark .modal-select,
+.dark .frequency-select,
+.dark .duration-input,
+.dark .instruction-input {
+  background: #0f172a;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.dark .f-control::placeholder,
+.dark .modal-input::placeholder {
+  color: #64748b;
+}
+
+.dark .f-control:focus,
+.dark .modal-input:focus,
+.dark .modal-select:focus {
+  border-color: #f4a58a;
+  box-shadow: 0 0 0 3px rgba(244, 165, 138, 0.15);
+}
+
+.dark .f-control option,
+.dark .modal-select option {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+
+.dark .f-label,
+.dark .form-label,
+.dark .detail-label {
+  color: #94a3b8;
+}
+
+.dark .f-btn-ghost {
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.dark .f-btn-ghost:hover {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #f4a58a;
+  color: #f4a58a;
+}
+
+.dark .f-btn-primary,
+.dark .modal-save-btn {
+  background: #f4a58a;
+  color: #0f172a;
+}
+
+.dark .f-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(244, 165, 138, 0.4);
+}
+
+.dark .medicine-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+.dark .medicine-card:hover {
+  background: #1e293b;
+}
+
+.dark .medicine-name {
+  color: #f1f5f9;
+}
+
+.dark .medicine-type-badge,
+.dark .detail-value {
+  color: #94a3b8;
+}
+
+.dark .vital-box {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+.dark .vital-box:focus-within {
+  border-color: #ee8875;
+  box-shadow: 0 0 0 3px rgba(238, 136, 117, 0.1);
+}
+
+.dark .vital-input {
+  color: #f1f5f9;
+}
+
+.dark .vital-label {
+  color: #94a3b8;
+}
+
+.dark .dark-color{
+  color: #ee8875 !important;
+}
+
+.dark .add-medicine-modal {
+  background: #1e293b;
+  border-color: #f4a58a;
+}
+
+.dark .modal-header {
+  border-bottom-color: #f4a58a;
+}
+
+.dark .modal-title {
+  color: #f1f5f9;
+}
+
+.dark .modal-close-btn {
+  background: rgba(244, 165, 138, 0.1);
+  color: #f4a58a;
+}
+
+.dark .brand-search-dropdown,
+.dark .brand-option {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .brand-name {
+  color: #f1f5f9;
+}
+
+.dark .brand-detail {
+  color: #94a3b8;
+}
+
+.dark .brand-option:hover {
+  background: #334155;
+}
+
+.dark .modal-cancel-btn {
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.dark .modal-cancel-btn:hover {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #f4a58a;
+  color: #f4a58a;
+}
+
+.dark .rx-paper {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+.dark .rx-header {
+  border-bottom-color: #f4a58a;
+}
+
+.dark .rx-doc-name,
+.dark .rx-left-title,
+.dark .rx-symbol,
+.dark .rx-followup,
+.dark .rx-date-line {
+  color: #f1f5f9;
+}
+
+.dark .rx-doc-line,
+.dark .rx-complaint-list,
+.dark .rx-complaint-para,
+.dark .rx-med-name,
+.dark .rx-med-instruction,
+.dark .rx-med-num,
+.dark .rx-med-strength,
+.dark .rx-med-note,
+.dark .rx-med-duration {
+  color: #cbd5e1;
+}
+
+.dark .rx-patient-strip,
+.dark .rx-vitals-strip,
+.dark .rx-left-divider,
+.dark .rx-medicine-item {
+  border-bottom-color: #334155;
+}
+
+.dark .rx-pfield strong,
+.dark .rx-vital-pill strong {
+  color: #f1f5f9;
+}
+
+.dark .rx-no-meds {
+  color: #94a3b8;
+}
+
+.dark .medicines-header {
+  background: #1e293b;
+  border-bottom-color: #334155;
+}
+
+.dark .sort-btn {
+  background: rgba(244, 165, 138, 0.1);
+  color: #f4a58a;
+}
+
+.dark .add-med-btn {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+  border-color: rgba(244, 165, 138, 0.3);
+}
+
+.dark .print-btn {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+}
+
+.dark .print-btn:hover {
+  background: rgba(244, 165, 138, 0.25);
+}
+
+.dark .followup-text {
+  color: #94a3b8;
 }
 
 /* Responsive */

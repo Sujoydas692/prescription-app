@@ -294,6 +294,7 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ========== Header Styles ========== */
@@ -325,6 +326,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-title {
@@ -333,11 +335,13 @@ onMounted(() => {
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
   margin-bottom: 4px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-subtitle {
   font-size: 13px;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .add-prescription-btn {
@@ -352,7 +356,7 @@ onMounted(() => {
   background: #f4a58a;
   color: #1e2a4a;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .add-prescription-btn:hover {
@@ -568,12 +572,14 @@ onMounted(() => {
   font-weight: 800;
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .empty-desc {
   font-size: 13px;
   color: #9aa0b8;
   margin-bottom: 10px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .empty-btn {
@@ -581,6 +587,7 @@ onMounted(() => {
   font-weight: 700;
   color: #ee8875;
   text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ========== Prescriptions Grid ========== */
@@ -596,7 +603,7 @@ onMounted(() => {
   background: white;
   border-radius: 24px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(30, 42, 74, 0.06);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
@@ -638,6 +645,7 @@ onMounted(() => {
   font-weight: 700;
   color: white;
   flex-shrink: 0;
+  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .action-buttons {
@@ -656,7 +664,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
 }
 
@@ -676,7 +684,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .delete-btn:hover {
@@ -691,7 +699,7 @@ onMounted(() => {
   font-family: "Nunito", sans-serif;
   margin-bottom: 12px;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .patient-name:hover {
@@ -706,6 +714,7 @@ onMounted(() => {
   padding: 12px 0;
   border-top: 1px solid rgba(30, 42, 74, 0.06);
   border-bottom: 1px solid rgba(30, 42, 74, 0.06);
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .detail-item {
@@ -729,6 +738,7 @@ onMounted(() => {
 
 .detail-text {
   color: #5e6a85;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .detail-text-special {
@@ -738,6 +748,7 @@ onMounted(() => {
   background: rgba(238, 136, 117, 0.1);
   color: #c05030;
   border: 1px solid rgba(238, 136, 117, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-footer {
@@ -752,12 +763,148 @@ onMounted(() => {
   font-weight: 700;
   color: #ee8875;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view-details-btn:hover {
   gap: 10px;
   color: #c05030;
+}
+
+/* ========== DARK MODE STYLES ========== */
+.dark .prescriptions-container {
+  background: transparent;
+}
+
+.dark .header-title {
+  color: #f1f5f9;
+}
+
+.dark .header-subtitle {
+  color: #94a3b8;
+}
+
+.dark .header-icon {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 165, 138, 0.2),
+    rgba(46, 107, 139, 0.15)
+  );
+}
+
+.dark .search-input {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.dark .search-input:hover {
+  background: #1e293b;
+  border-color: rgba(244, 165, 138, 0.3);
+}
+
+.dark .search-input:focus {
+  border-color: #f4a58a;
+  background: #1e293b;
+}
+
+.dark .search-input::placeholder {
+  color: #64748b;
+}
+
+.dark .search-icon {
+  color: #64748b;
+}
+
+.dark .search-input:focus + .search-icon {
+  color: #f4a58a;
+}
+
+.dark .loading-state,
+.dark .empty-state {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .loading-text,
+.dark .empty-desc {
+  color: #94a3b8;
+}
+
+.dark .empty-title {
+  color: #f1f5f9;
+}
+
+.dark .empty-btn {
+  color: #f4a58a;
+}
+
+.dark .prescription-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .avatar {
+  background: #f4a58a;
+  color: #0f172a;
+}
+
+.dark .patient-name {
+  color: #f1f5f9;
+}
+
+.dark .patient-name:hover {
+  color: #f4a58a;
+}
+
+.dark .prescription-details {
+  border-top-color: #334155;
+  border-bottom-color: #334155;
+}
+
+.dark .detail-text {
+  color: #94a3b8;
+}
+
+.dark .detail-text-special {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+  border-color: rgba(244, 165, 138, 0.3);
+}
+
+.dark .edit-btn {
+  background: rgba(244, 165, 138, 0.1);
+  color: #f4a58a;
+}
+
+.dark .edit-btn:hover {
+  background: rgba(244, 165, 138, 0.2);
+}
+
+.dark .delete-btn {
+  background: rgba(224, 82, 82, 0.15);
+  color: #f87171;
+}
+
+.dark .delete-btn:hover {
+  background: rgba(224, 82, 82, 0.25);
+}
+
+.dark .view-details-btn {
+  color: #f4a58a;
+}
+
+.dark .view-details-btn:hover {
+  color: #ee8875;
+}
+
+.dark .add-prescription-btn {
+  background: #f4a58a;
+  color: #0f172a;
+}
+
+.dark .add-prescription-btn:hover {
+  box-shadow: 0 4px 12px rgba(244, 165, 138, 0.4);
 }
 
 /* ========== Responsive ========== */

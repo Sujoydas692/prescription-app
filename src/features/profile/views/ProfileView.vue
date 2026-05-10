@@ -155,42 +155,6 @@
         </div>
       </div>
 
-      <!-- Preferences Card (for future update) -->
-      <!-- <div class="profile-card">
-        <div class="card-header">
-          <div class="header-left">
-            <div class="header-icon">⚙️</div>
-            <div>
-              <h3 class="card-title">Preferences</h3>
-              <p class="card-subtitle">Customize your prescription settings</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="preferences-list">
-          <div
-            v-for="pref in prefItems"
-            :key="pref.key"
-            class="preference-item"
-          >
-            <div class="preference-info">
-              <div class="preference-icon">{{ pref.icon }}</div>
-              <div>
-                <p class="preference-title">{{ pref.label }}</p>
-                <p class="preference-desc">{{ pref.desc }}</p>
-              </div>
-            </div>
-            <button
-              @click="prefs[pref.key] = !prefs[pref.key]"
-              class="toggle-switch"
-              :class="{ active: prefs[pref.key] }"
-            >
-              <span class="toggle-slider"></span>
-            </button>
-          </div>
-        </div>
-      </div> -->
-
       <!-- Account Card -->
       <div class="profile-card danger-card">
         <div class="card-header">
@@ -255,40 +219,6 @@ const form = reactive({
   schedule: "",
 });
 
-const prefs = reactive({
-  showDate: true,
-  showVitals: true,
-  signature: true,
-  showTests: true,
-});
-
-const prefItems = [
-  {
-    key: "showDate",
-    label: "Show date on prescription",
-    desc: "Print visit date on the Rx slip",
-    icon: "📅",
-  },
-  {
-    key: "showVitals",
-    label: "Include vitals",
-    desc: "Show BP, pulse etc. on the Rx",
-    icon: "❤️",
-  },
-  {
-    key: "signature",
-    label: "Signature line",
-    desc: "Show signature line at bottom",
-    icon: "✍️",
-  },
-  {
-    key: "showTests",
-    label: "Show test section",
-    desc: "Include investigations section",
-    icon: "🔬",
-  },
-];
-
 async function save() {
   saving.value = true;
   try {
@@ -328,6 +258,7 @@ onMounted(() => {
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Hero Section */
@@ -338,6 +269,7 @@ onMounted(() => {
   margin-bottom: 24px;
   overflow: hidden;
   padding: 32px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-overlay {
@@ -402,6 +334,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   z-index: 1;
+  transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .avatar-text {
@@ -421,12 +354,14 @@ onMounted(() => {
   color: white;
   font-family: "Nunito", sans-serif;
   margin-bottom: -6px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-email {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.6);
   margin-bottom: 20px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-badge {
@@ -440,6 +375,7 @@ onMounted(() => {
   font-size: 12px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Profile Content */
@@ -455,7 +391,7 @@ onMounted(() => {
   padding: 24px;
   border: 1px solid rgba(30, 42, 74, 0.06);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .profile-card:hover {
@@ -486,6 +422,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 22px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-icon.danger {
@@ -498,6 +435,7 @@ onMounted(() => {
   color: #1e2a4a;
   font-family: "Nunito", sans-serif;
   margin-bottom: 4px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-title.danger {
@@ -507,6 +445,7 @@ onMounted(() => {
 .card-subtitle {
   font-size: 12px;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Form Styles */
@@ -532,6 +471,7 @@ onMounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .input-wrapper {
@@ -562,7 +502,7 @@ onMounted(() => {
   font-family: "DM Sans", sans-serif;
   color: #1e2a4a;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .form-textarea {
@@ -594,7 +534,7 @@ onMounted(() => {
   color: #1e2a4a;
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .save-btn:hover:not(:disabled) {
@@ -622,86 +562,6 @@ onMounted(() => {
   }
 }
 
-/* Preferences List */
-.preferences-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.preference-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(30, 42, 74, 0.06);
-}
-
-.preference-item:last-child {
-  border-bottom: none;
-}
-
-.preference-info {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.preference-icon {
-  width: 40px;
-  height: 40px;
-  background: rgba(238, 136, 117, 0.08);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.preference-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #1e2a4a;
-  margin-bottom: 2px;
-}
-
-.preference-desc {
-  font-size: 11px;
-  color: #9aa0b8;
-}
-
-/* Toggle Switch */
-.toggle-switch {
-  width: 48px;
-  height: 26px;
-  background: rgba(30, 42, 74, 0.15);
-  border-radius: 30px;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-.toggle-switch.active {
-  background: #ee8875;
-}
-
-.toggle-slider {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 20px;
-  height: 20px;
-  background: white;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.toggle-switch.active .toggle-slider {
-  transform: translateX(22px);
-}
-
 /* Account Actions */
 .account-actions {
   display: flex;
@@ -726,6 +586,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 22px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .action-title {
@@ -733,11 +594,13 @@ onMounted(() => {
   font-weight: 700;
   color: #1e2a4a;
   margin-bottom: 2px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .action-desc {
   font-size: 11px;
   color: #9aa0b8;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .signout-btn {
@@ -752,7 +615,7 @@ onMounted(() => {
   color: #e05252;
   border: 1px solid rgba(224, 82, 82, 0.2);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .signout-btn:hover {
@@ -763,6 +626,109 @@ onMounted(() => {
 /* Danger Card */
 .danger-card {
   border-color: rgba(224, 82, 82, 0.15);
+}
+
+/* ========== DARK MODE STYLES ========== */
+.dark .profile-hero {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.dark .avatar {
+  background: #f4a58a;
+}
+
+.dark .avatar-text {
+  color: #0f172a;
+}
+
+.dark .hero-name {
+  color: #f1f5f9;
+}
+
+.dark .hero-email {
+  color: #94a3b8;
+}
+
+.dark .hero-badge {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+}
+
+.dark .profile-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .card-title {
+  color: #f1f5f9;
+}
+
+.dark .card-subtitle,
+.dark .form-label,
+.dark .action-desc {
+  color: #94a3b8;
+}
+
+.dark .header-icon {
+  background: rgba(244, 165, 138, 0.1);
+}
+
+.dark .form-input,
+.dark .form-textarea {
+  background: #0f172a;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.dark .form-input:focus,
+.dark .form-textarea:focus {
+  border-color: #f4a58a;
+  box-shadow: 0 0 0 3px rgba(244, 165, 138, 0.15);
+}
+
+.dark .form-input::placeholder,
+.dark .form-textarea::placeholder {
+  color: #64748b;
+}
+
+.dark .form-input:disabled {
+  background: #334155;
+  color: #94a3b8;
+}
+
+.dark .save-btn {
+  background: #f4a58a;
+  color: #0f172a;
+}
+
+.dark .save-btn:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(244, 165, 138, 0.35);
+}
+
+.dark .action-title {
+  color: #f1f5f9;
+}
+
+.dark .action-icon {
+  background: rgba(244, 165, 138, 0.1);
+}
+
+.dark .signout-btn {
+  background: rgba(224, 82, 82, 0.15);
+  color: #f87171;
+  border-color: rgba(224, 82, 82, 0.3);
+}
+
+.dark .signout-btn:hover {
+  background: rgba(224, 82, 82, 0.25);
+}
+
+.dark .danger-card {
+  border-color: rgba(224, 82, 82, 0.25);
+}
+
+.dark .card-title.danger {
+  color: #f87171;
 }
 
 /* Responsive */
@@ -796,12 +762,6 @@ onMounted(() => {
   .save-btn {
     width: 100%;
     justify-content: center;
-  }
-
-  .preference-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
   }
 
   .account-actions {

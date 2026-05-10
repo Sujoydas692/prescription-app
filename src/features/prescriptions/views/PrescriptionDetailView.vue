@@ -548,7 +548,7 @@ onMounted(() => store.fetchById(route.params.id));
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .back-button:hover {
   background: rgba(238, 136, 117, 0.05);
@@ -568,7 +568,7 @@ onMounted(() => store.fetchById(route.params.id));
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .edit-button:hover {
   background: rgba(238, 136, 117, 0.05);
@@ -588,7 +588,7 @@ onMounted(() => store.fetchById(route.params.id));
   font-weight: 700;
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .print-button:hover {
   background: rgba(238, 136, 117, 0.2);
@@ -677,17 +677,20 @@ onMounted(() => store.fetchById(route.params.id));
   font-weight: 800;
   color: #1e2a4a;
   margin-bottom: 8px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .not-found-text {
   font-size: 13px;
   color: #9aa0b8;
   margin-bottom: 24px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .back-link {
   font-size: 13px;
   font-weight: 700;
   color: #ee8875;
   text-decoration: none;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ============================= */
@@ -701,7 +704,7 @@ onMounted(() => store.fetchById(route.params.id));
   border: 1px solid rgba(30, 42, 74, 0.06);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
   overflow: hidden;
-  transition: 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 20px;
 }
 
@@ -737,17 +740,20 @@ onMounted(() => store.fetchById(route.params.id));
   border-bottom: 2px solid #111;
   flex-wrap: wrap;
   gap: 12px;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .doctor-name {
   font-size: 19px;
   font-weight: 700;
   margin-bottom: 4px;
   color: #000;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .doctor-line {
   font-size: 11.5px;
   line-height: 1.65;
   color: #222;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .date-block {
   text-align: right;
@@ -770,6 +776,7 @@ onMounted(() => store.fetchById(route.params.id));
   border-bottom: 1px solid #ccc;
   padding: 8px 28px;
   font-size: 12.5px;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .pfield {
   white-space: nowrap;
@@ -786,6 +793,7 @@ onMounted(() => store.fetchById(route.params.id));
   padding: 7px 28px;
   font-size: 12px;
   border-bottom: 1px dashed #ccc;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .vital-pill strong {
   font-weight: 700;
@@ -811,10 +819,12 @@ onMounted(() => store.fetchById(route.params.id));
   font-weight: 700;
   margin-bottom: 6px;
   color: #000;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .left-divider {
   border-bottom: 1px solid #ddd;
   margin: 12px 0;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .complaint-list {
   list-style: disc;
@@ -822,11 +832,13 @@ onMounted(() => store.fetchById(route.params.id));
   font-size: 12.5px;
   line-height: 2.1;
   color: #222;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .complaint-para {
   font-size: 12.5px;
   line-height: 1.6;
   color: #222;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Right column */
@@ -841,6 +853,7 @@ onMounted(() => store.fetchById(route.params.id));
   color: #111;
   margin-bottom: 14px;
   line-height: 1;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .rx-symbol sub {
   font-size: 20px;
@@ -850,6 +863,7 @@ onMounted(() => store.fetchById(route.params.id));
 .no-meds {
   font-size: 13px;
   color: #999;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .medicines-list {
@@ -860,6 +874,7 @@ onMounted(() => store.fetchById(route.params.id));
   padding-bottom: 12px;
   margin-bottom: 2px;
   border-bottom: 1px dashed #ddd;
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .medicine-item:last-child {
   border-bottom: none;
@@ -868,6 +883,7 @@ onMounted(() => store.fetchById(route.params.id));
   font-size: 13.5px;
   margin-bottom: 4px;
   color: #000;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .med-name strong {
   font-weight: 700;
@@ -875,14 +891,17 @@ onMounted(() => store.fetchById(route.params.id));
 .med-num {
   color: #555;
   margin-right: 1px;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .med-strength {
   font-size: 12px;
   color: #333;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .med-generic {
   font-size: 11.5px;
   color: #666;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .med-instruction {
   display: flex;
@@ -891,15 +910,18 @@ onMounted(() => store.fetchById(route.params.id));
   padding-left: 16px;
   font-size: 12px;
   color: #333;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .med-dosage {
   font-weight: 600;
 }
 .med-note {
   color: #555;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .med-duration {
   color: #555;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .followup-line {
@@ -907,6 +929,106 @@ onMounted(() => store.fetchById(route.params.id));
   font-size: 13.5px;
   font-weight: 700;
   color: #000;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========== DARK MODE STYLES ========== */
+.dark .back-button {
+  background: #1e293b;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.dark .back-button:hover {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #f4a58a;
+  color: #f4a58a;
+}
+
+.dark .edit-button {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+.dark .edit-button:hover {
+  background: rgba(244, 165, 138, 0.1);
+  border-color: #f4a58a;
+  color: #f4a58a;
+}
+
+.dark .print-button {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+}
+
+.dark .print-button:hover {
+  background: rgba(244, 165, 138, 0.25);
+}
+
+.dark .rx-paper {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .rx-header {
+  border-bottom-color: #f4a58a;
+}
+
+.dark .doctor-name,
+.dark .left-title,
+.dark .rx-symbol,
+.dark .followup-line,
+.dark .med-name {
+  color: #f1f5f9;
+}
+
+.dark .doctor-line,
+.dark .date-line,
+.dark .complaint-list,
+.dark .complaint-para,
+.dark .med-instruction,
+.dark .med-strength,
+.dark .med-generic,
+.dark .med-num {
+  color: #cbd5e1;
+}
+
+.dark .patient-strip,
+.dark .vitals-strip,
+.dark .left-divider,
+.dark .medicine-item {
+  border-bottom-color: #334155;
+}
+
+.dark .pfield strong,
+.dark .vital-pill strong {
+  color: #f1f5f9;
+}
+
+.dark .pfield,
+.dark .vital-pill {
+  color: #94a3b8;
+}
+
+.dark .no-meds {
+  color: #94a3b8;
+}
+
+.dark .not-found-title {
+  color: #f1f5f9;
+}
+
+.dark .not-found-text {
+  color: #94a3b8;
+}
+
+.dark .back-link {
+  color: #f4a58a;
+}
+
+.dark .loading-text {
+  color: #94a3b8;
 }
 
 /* Responsive */
@@ -934,6 +1056,10 @@ onMounted(() => store.fetchById(route.params.id));
   }
   .vitals-strip {
     padding: 7px 20px;
+  }
+
+  .dark .rx-left {
+    border-bottom-color: #334155;
   }
 }
 
