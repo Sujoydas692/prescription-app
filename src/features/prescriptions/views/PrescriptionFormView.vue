@@ -105,12 +105,8 @@
               v-for="d in diagnosisTags"
               :key="d"
               @click="form.diagnosis = d"
-              class="px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all hover:scale-105"
-              :style="
-                form.diagnosis === d
-                  ? 'background:#EE8875; color:white; box-shadow:0 2px 8px rgba(238,136,117,0.4);'
-                  : 'background:rgba(238,136,117,0.1); color:#C05030; border:1px solid rgba(238,136,117,0.2);'
-              "
+              class="dx-tag"
+              :class="{ active: form.diagnosis === d }"
             >
               {{ form.diagnosis === d ? "✓ " : "" }}{{ d }}
             </button>
@@ -1258,6 +1254,29 @@ onMounted(async () => {
   box-shadow: 0 4px 10px rgba(238, 136, 117, 0.4);
 }
 
+.dx-tag {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  background: rgba(238, 136, 117, 0.1);
+  color: #c05030;
+  border: 1px solid rgba(238, 136, 117, 0.2);
+  cursor: pointer;
+}
+
+.dx-tag:hover {
+  transform: scale(1.05);
+}
+
+.dx-tag.active {
+  background: #ee8875;
+  color: white;
+  box-shadow: 0 2px 8px rgba(238, 136, 117, 0.4);
+  border: none;
+}
+
 /* ========== Medicines Grid - Compact Card Styles ========== */
 .medicines-grid {
   display: grid;
@@ -2076,6 +2095,11 @@ onMounted(async () => {
   color: #f1f5f9;
 }
 
+.dark .f-control[type="datetime-local"],
+.dark .f-control[type="date"] {
+  color-scheme: dark;
+}
+
 .dark .f-control::placeholder,
 .dark .modal-input::placeholder {
   color: #64748b;
@@ -2157,17 +2181,12 @@ onMounted(async () => {
   color: #94a3b8;
 }
 
-.dark .dark-color{
+.dark .dark-color {
   color: #ee8875 !important;
 }
 
 .dark .add-medicine-modal {
   background: #1e293b;
-  border-color: #f4a58a;
-}
-
-.dark .modal-header {
-  border-bottom-color: #f4a58a;
 }
 
 .dark .modal-title {
@@ -2206,6 +2225,24 @@ onMounted(async () => {
   background: rgba(244, 165, 138, 0.1);
   border-color: #f4a58a;
   color: #f4a58a;
+}
+
+.dark .dx-tag {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+  border: 1px solid rgba(244, 165, 138, 0.25);
+}
+
+.dark .dx-tag:hover {
+  background: rgba(244, 165, 138, 0.25);
+  transform: scale(1.05);
+}
+
+.dark .dx-tag.active {
+  background: #f4a58a;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(244, 165, 138, 0.4);
+  border: none;
 }
 
 .dark .rx-paper {
@@ -2264,6 +2301,12 @@ onMounted(async () => {
 }
 
 .dark .add-med-btn {
+  background: rgba(244, 165, 138, 0.15);
+  color: #f4a58a;
+  border-color: rgba(244, 165, 138, 0.3);
+}
+
+.dark .f-btn-accent {
   background: rgba(244, 165, 138, 0.15);
   color: #f4a58a;
   border-color: rgba(244, 165, 138, 0.3);
