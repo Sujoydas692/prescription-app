@@ -13,9 +13,13 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 app.use(Vue3Toastify, {
+  position: 'bottom-right',
   autoClose: 3000,
-  position: 'top-right',
-  theme: 'light',
+  hideProgressBar: true,
+  closeButton: false,
+  pauseOnHover: true,
+  closeOnClick: true,
+  theme: 'dark',
 })
 
 app.mount('#app')
