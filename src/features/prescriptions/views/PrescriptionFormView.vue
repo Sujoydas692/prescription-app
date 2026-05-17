@@ -388,8 +388,18 @@
                 <span
                   v-for="(t, i) in form.tests"
                   :key="i"
-                  class="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold dark-color"
-                  style="background: rgba(46, 107, 139, 0.1); color: #2e6b8b"
+                  class="flex items-center gap-1.5 px-3 py-1 text-[12px] font-semibold dark-color"
+                  style="
+                    background: rgba(46, 107, 139, 0.1);
+                    color: #2e6b8b;
+                    border-radius: 10px;
+                    word-break: break-word;
+                    overflow-wrap: break-word;
+                    white-space: normal;
+                    max-width: 100%;
+                    word-wrap: break-word;
+                    hyphens: auto;
+                  "
                 >
                   {{ t.testName }}
                   <button
@@ -559,6 +569,7 @@
                     .split('\n')
                     .filter((l) => l.trim())"
                   :key="line"
+                  class="complaint-item"
                 >
                   {{ line.trim() }}
                 </li>
@@ -575,7 +586,11 @@
             <div v-if="form.tests.length" class="rx-left-section">
               <h3 class="rx-left-title">Investigation:</h3>
               <ul class="rx-complaint-list">
-                <li v-for="t in form.tests" :key="t.testName">
+                <li
+                  v-for="t in form.tests"
+                  :key="t.testName"
+                  class="complaint-item"
+                >
                   {{ t.testName }}
                 </li>
               </ul>
@@ -935,8 +950,23 @@ function printPreview() {
           font-size: 12px;
           line-height: 2.1;
         }
+
+        .complaint-item {
+          word-break: break-word;
+          overflow-wrap: break-word;
+          white-space: normal;
+          max-width: 100%;
+          word-wrap: break-word;
+          hyphens: auto;
+        }
         
         .rx-complaint-para {
+          word-break: break-word;
+          overflow-wrap: break-word;
+          white-space: normal;
+          max-width: 100%;
+          word-wrap: break-word;
+          hyphens: auto;
           font-size: 12px;
           line-height: 1.6;
         }
@@ -1761,7 +1791,21 @@ onMounted(async () => {
   color: #222;
   transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.complaint-item {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+  word-wrap: break-word;
+  hyphens: auto;
+}
 .rx-complaint-para {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+  word-wrap: break-word;
+  hyphens: auto;
   font-size: 11.5px;
   line-height: 1.6;
   color: #222;
@@ -2278,6 +2322,7 @@ onMounted(async () => {
 .dark .rx-vitals-strip,
 .dark .rx-left-divider,
 .dark .rx-medicine-item {
+  color: #cbd5e1;
   border-bottom-color: #334155;
 }
 
