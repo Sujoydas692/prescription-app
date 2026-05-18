@@ -708,7 +708,7 @@ onMounted(() => store.fetchAll());
 
 .empty-icon {
   font-size: 64px;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .empty-title {
@@ -1124,6 +1124,19 @@ onMounted(() => store.fetchAll());
 @media (max-width: 768px) {
   .chambers-container {
     padding: 16px;
+  }
+
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: auto;
+  }
+
+  .empty-title {
+    font-size: 18px;
+  }
+
+  .empty-desc {
+    font-size: 11px;
   }
 
   .form-body {

@@ -913,6 +913,23 @@ onMounted(() => {
     padding: 16px;
   }
 
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: auto;
+  }
+
+  .empty-title {
+    font-size: 18px;
+  }
+
+  .empty-btn {
+    font-size: 13px;
+  }
+
+  .empty-desc {
+    font-size: 11px;
+  }
+
   .prescriptions-grid {
     grid-template-columns: 1fr;
   }

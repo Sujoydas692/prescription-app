@@ -1153,7 +1153,6 @@ onMounted(async () => {
 .prescription-container {
   display: flex;
   gap: 24px;
-  padding: 20px;
   max-width: 1600px;
   margin: 0 auto;
 }
@@ -2374,7 +2373,6 @@ onMounted(async () => {
 @media (max-width: 1024px) {
   .prescription-container {
     flex-direction: column;
-    padding: 16px;
   }
   .preview-section {
     width: 100%;
