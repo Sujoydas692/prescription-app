@@ -1712,7 +1712,7 @@ function handleLogout() {
   }
 
   .mobile-greeting {
-    margin: 0 auto;
+    margin: 0px 0px 0px 10px;
     text-align: center;
   }
 

@@ -460,7 +460,7 @@
     <div class="preview-section">
       <div class="preview-header">
         <h3 class="preview-title">
-          <span class="preview-icon">📄</span> Live Preview
+          <span class="preview-icon">📑</span> Prescription Preview
         </h3>
         <button @click="printPreview" class="print-btn">
           <svg
@@ -650,6 +650,252 @@
       </div>
     </div>
   </div>
+
+  <!-- Mobile Preview Button + Modal -->
+  <Teleport to="body">
+    <!-- Sticky Preview Button (mobile only) -->
+    <button class="mobile-preview-fab" @click="showMobilePreview = true">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+        />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7
+           -1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+        />
+      </svg>
+      Preview
+    </button>
+
+    <!-- Modal Overlay -->
+    <Transition name="preview-modal">
+      <div
+        v-if="showMobilePreview"
+        class="mobile-preview-overlay"
+        @click.self="showMobilePreview = false"
+      >
+        <div class="mobile-preview-modal">
+          <div class="mobile-preview-modal-header">
+            <span class="mobile-preview-modal-title"
+              >📑 Prescription Preview</span
+            >
+            <div style="display: flex; gap: 8px; align-items: center">
+              <button @click="printPreview" class="print-btn">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 
+                     2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 
+                     00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 
+                     2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                  />
+                </svg>
+                Print
+              </button>
+              <button
+                class="mobile-preview-close"
+                @click="showMobilePreview = false"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+          <div class="mobile-preview-modal-body">
+            <div id="prescription-preview" class="rx-paper">
+              <!-- Doctor Header -->
+              <div class="rx-header">
+                <div class="rx-doctor-block">
+                  <h1 class="rx-doc-name">
+                    Dr. {{ authStore.doctorName || "Md. Mahbubul Islam" }}
+                  </h1>
+                  <p class="rx-doc-line">
+                    {{ authStore.doctorDesignation || "MBBS, BCS" }}
+                  </p>
+                  <p class="rx-doc-line">
+                    {{
+                      authStore.doctorSpeciality ||
+                      "General Physician, ENT, Covid Unit"
+                    }}
+                  </p>
+                  <p class="rx-doc-line">
+                    Indoor Medical Officer ( ENT &amp; Head Neck Surgery )
+                  </p>
+                  <p class="rx-doc-line">ENT &amp; Head Neck Surgery</p>
+                  <p class="rx-doc-line">
+                    {{
+                      authStore.hospital ||
+                      "Shaheed Suhrawardy Medical College Hospital, Dhaka"
+                    }}
+                  </p>
+                  <p class="rx-doc-line">
+                    BMDC Reg. No - {{ authStore.regNo || "A62931" }}
+                  </p>
+                </div>
+                <div class="rx-date-block">
+                  <p class="rx-date-line">
+                    <strong>Date:</strong> {{ formatDate(form.visitDate) }}
+                  </p>
+                  <p class="rx-date-line" v-if="form.nextVisitDate">
+                    <strong>Ref:</strong> —
+                  </p>
+                </div>
+              </div>
+
+              <!-- Patient Strip -->
+              <div class="rx-patient-strip">
+                <span class="rx-pfield" v-if="selectedPatient?.fullName">
+                  <strong>Patient Name:</strong> {{ selectedPatient.fullName }}
+                </span>
+                <span class="rx-pfield" v-if="selectedPatient?.gender">
+                  <strong>Gender:</strong> {{ selectedPatient.gender }}
+                </span>
+                <span class="rx-pfield" v-if="selectedPatient?.age">
+                  <strong>Age:</strong> {{ selectedPatient.age }} yrs
+                </span>
+                <span class="rx-pfield" v-if="selectedPatient?.weight">
+                  <strong>Weight:</strong> {{ selectedPatient.weight }} kg
+                </span>
+                <span class="rx-pfield" v-if="!selectedPatient">
+                  <strong>Patient Name:</strong> —
+                </span>
+              </div>
+
+              <!-- Vitals Strip -->
+              <div v-if="hasVitals" class="rx-vitals-strip">
+                <span v-if="vitals.bp" class="rx-vital-pill"
+                  ><strong>BP:</strong> {{ vitals.bp }} mmHg</span
+                >
+                <span v-if="vitals.pulse" class="rx-vital-pill"
+                  ><strong>Pulse:</strong> {{ vitals.pulse }} bpm</span
+                >
+                <span v-if="vitals.temp" class="rx-vital-pill"
+                  ><strong>Temp:</strong> {{ vitals.temp }} °F</span
+                >
+                <span v-if="vitals.spo2" class="rx-vital-pill"
+                  ><strong>SpO₂:</strong> {{ vitals.spo2 }} %</span
+                >
+              </div>
+
+              <!-- Two-column body -->
+              <div class="rx-body">
+                <!-- LEFT COLUMN -->
+                <div class="rx-left">
+                  <div v-if="form.chiefComplaints" class="rx-left-section">
+                    <h3 class="rx-left-title">Chief Complaints:</h3>
+                    <ul class="rx-complaint-list">
+                      <li
+                        v-for="line in form.chiefComplaints
+                          .split('\n')
+                          .filter((l) => l.trim())"
+                        :key="line"
+                        class="complaint-item"
+                      >
+                        {{ line.trim() }}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div
+                    class="rx-left-divider"
+                    v-if="
+                      form.chiefComplaints &&
+                      (form.tests.length || form.diagnosis)
+                    "
+                  ></div>
+
+                  <div v-if="form.tests.length" class="rx-left-section">
+                    <h3 class="rx-left-title">Investigation:</h3>
+                    <ul class="rx-complaint-list">
+                      <li
+                        v-for="t in form.tests"
+                        :key="t.testName"
+                        class="complaint-item"
+                      >
+                        {{ t.testName }}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div v-if="form.diagnosis" class="rx-left-section">
+                    <h3 class="rx-left-title">Diagnosis:</h3>
+                    <p class="rx-complaint-para">{{ form.diagnosis }}</p>
+                  </div>
+
+                  <div v-if="form.notes" class="rx-left-section">
+                    <h3 class="rx-left-title">Notes:</h3>
+                    <p class="rx-complaint-para">{{ form.notes }}</p>
+                  </div>
+                </div>
+
+                <!-- RIGHT COLUMN -->
+                <div class="rx-right">
+                  <div class="rx-symbol">R<sub>x</sub></div>
+
+                  <div v-if="!form.medicines.length" class="rx-no-meds">
+                    No medicines prescribed.
+                  </div>
+                  <div v-else class="rx-medicines-list">
+                    <div
+                      v-for="(med, i) in form.medicines"
+                      :key="i"
+                      class="rx-medicine-item"
+                    >
+                      <p class="rx-med-name">
+                        <span class="rx-med-num">{{ i + 1 }}.</span>
+                        <strong
+                          >{{ med.type || "Tab" }}.
+                          {{ med.brandSearch }}</strong
+                        >
+                        <span v-if="med.dosage" class="rx-med-strength">
+                          {{ med.dosage }}</span
+                        >
+                      </p>
+                      <p class="rx-med-instruction">
+                        <span class="rx-med-dosage">{{
+                          med.frequency || "—"
+                        }}</span>
+                        <span v-if="med.instruction" class="rx-med-note">{{
+                          med.instruction
+                        }}</span>
+                        <span v-if="med.duration" class="rx-med-duration">{{
+                          med.duration
+                        }}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div v-if="form.nextVisitDate" class="rx-followup">
+                    <strong>Follow-up Date:</strong>
+                    {{ formatDateForFollowUp(form.nextVisitDate) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup>
@@ -673,6 +919,7 @@ const authStore = useAuthStore();
 const isEdit = computed(() => !!route.params.id);
 
 const showAddMed = ref(false);
+const showMobilePreview = ref(false);
 const brandResults = ref([]);
 const testsInput = ref("");
 
@@ -1178,12 +1425,11 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  background: white;
+  background: #fdf3f1a8;
   border-radius: 24px 24px 0 0;
   position: sticky;
   top: 0;
   z-index: 10;
-  margin-bottom: 12px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1206,9 +1452,9 @@ onMounted(async () => {
   border-radius: 10px;
   background: rgba(238, 136, 117, 0.1);
   color: #c05030;
+  border: 1px solid rgba(238, 136, 117, 0.3);
   font-weight: 600;
   font-size: 12px;
-  border: none;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -2103,6 +2349,155 @@ onMounted(async () => {
   vertical-align: middle;
 }
 
+/* ══ Mobile FAB Preview Button ══ */
+.mobile-preview-fab {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobile-preview-fab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: fixed;
+    bottom: 93px;
+    left: 90%;
+    transform: translateX(-50%);
+    z-index: 100;
+    padding: 13px 23px;
+    border-radius: 999px;
+    background: #f4a58a;
+    color: #1e2a4a;
+    font-family: "Nunito", sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(238, 136, 117, 0.45);
+    transition: all 0.2s;
+  }
+
+  .mobile-preview-fab:hover {
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 10px 28px rgba(238, 136, 117, 0.5);
+  }
+
+  /* Hide the original side preview on mobile */
+  .preview-section {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .mobile-preview-fab {
+    left: 77%;
+  }
+}
+
+/* ══ Modal Overlay ══ */
+.mobile-preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  backdrop-filter: blur(4px);
+}
+
+.dark .mobile-preview-overlay {
+  background: rgb(98 93 93 / 47%);
+}
+
+.mobile-preview-modal {
+  width: 100%;
+  max-height: 88vh;
+  background: #fdf3f1a8;
+  border-radius: 24px 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dark .mobile-preview-modal {
+  background: #323a4c;
+}
+
+.mobile-preview-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(30, 42, 74, 0.08);
+  position: sticky;
+  top: 0;
+  background: inherit;
+  z-index: 5;
+  flex-shrink: 0;
+}
+
+.dark .mobile-preview-modal-header {
+  border-bottom-color: #334155;
+}
+
+.mobile-preview-modal-title {
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: #1e2a4a;
+}
+
+.dark .mobile-preview-modal-title {
+  color: #f1f5f9;
+}
+
+.mobile-preview-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(30, 42, 74, 0.07);
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #5a6282;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.mobile-preview-close:hover {
+  background: rgba(238, 136, 117, 0.15);
+  color: #ee8875;
+}
+
+.mobile-preview-modal-body {
+  overflow-y: auto;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ══ Modal Transition ══ */
+.preview-modal-enter-active,
+.preview-modal-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.preview-modal-enter-active .mobile-preview-modal,
+.preview-modal-leave-active .mobile-preview-modal {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preview-modal-enter-from,
+.preview-modal-leave-to {
+  opacity: 0;
+}
+
+.preview-modal-enter-from .mobile-preview-modal,
+.preview-modal-leave-to .mobile-preview-modal {
+  transform: translateY(100%);
+}
+
 /* ========== DARK MODE STYLES ========== */
 .dark .prescription-container {
   background: transparent;
@@ -2115,7 +2510,7 @@ onMounted(async () => {
 }
 
 .dark .preview-header {
-  background: #0f172a;
+  background: #323a4c;
 }
 
 .dark .f-card-title,
